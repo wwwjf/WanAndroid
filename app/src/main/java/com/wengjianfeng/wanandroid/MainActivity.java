@@ -37,7 +37,7 @@ public class MainActivity extends AppCompatActivity {
         /*ActionBar actionBar = getSupportActionBar();
         actionBar.setHomeAsUpIndicator(R.drawable.ic_menu);
         actionBar.setDisplayHomeAsUpEnabled(true);*/
-
+//        https://chanyouji.com/api/destinations/45.json
         //方法2 menu图标有动画
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
                 this, mDrawerLayout, mToolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
