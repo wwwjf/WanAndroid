@@ -1,14 +1,18 @@
-package com.wengjianfeng.wanandroid;
+package com.wengjianfeng.wanandroid.ui.activity;
 
 import android.support.design.widget.NavigationView;
 import android.support.v4.widget.DrawerLayout;
-import android.support.v7.app.ActionBar;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
-import android.view.Gravity;
-import android.view.MenuItem;
+
+import com.wengjianfeng.wanandroid.R;
+import com.wengjianfeng.wanandroid.ui.adapter.HomeAdapter;
+
+import java.util.ArrayList;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -21,8 +25,13 @@ public class MainActivity extends AppCompatActivity {
     @BindView(R.id.toolbar)
     Toolbar mToolbar;
 
+
+    @BindView(R.id.recyclerView_main)
+    RecyclerView mRecyclerView;
+
     @BindView(R.id.navigationView)
     NavigationView mNavigationView;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -43,6 +52,18 @@ public class MainActivity extends AppCompatActivity {
                 this, mDrawerLayout, mToolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
         mDrawerLayout.setDrawerListener(toggle);
         toggle.syncState();
+
+        //
+        LinearLayoutManager layoutManager = new LinearLayoutManager(this, LinearLayoutManager.VERTICAL,false);
+        mRecyclerView.setLayoutManager(layoutManager);
+        ArrayList<String> data = new ArrayList();
+        for (int i = 0;i<100;i++) {
+            data.add(i+"");
+        }
+
+        HomeAdapter homeAdapter = new HomeAdapter(R.layout.item_home,data);
+        mRecyclerView.setAdapter(homeAdapter);
+
 
     }
 
