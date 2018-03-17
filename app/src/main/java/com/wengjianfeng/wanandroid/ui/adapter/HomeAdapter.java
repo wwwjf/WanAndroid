@@ -1,4 +1,4 @@
-package com.wengjianfeng.wanandroid.ui;
+package com.wengjianfeng.wanandroid.ui.adapter;
 
 import android.support.annotation.Nullable;
 

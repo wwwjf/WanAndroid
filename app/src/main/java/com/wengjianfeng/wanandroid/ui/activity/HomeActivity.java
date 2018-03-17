@@ -17,7 +17,7 @@ import java.util.ArrayList;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
-public class MainActivity extends AppCompatActivity {
+public class HomeActivity extends AppCompatActivity {
 
     @BindView(R.id.drawerLayout)
     DrawerLayout mDrawerLayout;
@@ -61,7 +61,7 @@ public class MainActivity extends AppCompatActivity {
             data.add(i+"");
         }
 
-        HomeAdapter homeAdapter = new HomeAdapter(R.layout.item_home,data);
+        HomeAdapter homeAdapter = new HomeAdapter(R.layout.adapter_home,data);
         mRecyclerView.setAdapter(homeAdapter);
 
 
