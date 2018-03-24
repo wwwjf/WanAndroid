@@ -1,9 +1,9 @@
 <resources>
 
-    <style name="AppTheme1234" parent="BaseAppTheme">
-        <!--<item name="windowActionBar">false</item>
+    <style name="AppTheme" parent="BaseAppTheme">
+        <item name="windowActionBar">false</item>
         <item name="windowNoTitle">true</item>
         <item name="android:fitsSystemWindows">true</item>
-        <item name="android:statusBarColor">@color/colorPrimary</item>-->
+        <item name="android:statusBarColor">@color/colorPrimary</item>
     </style>
 </resources>

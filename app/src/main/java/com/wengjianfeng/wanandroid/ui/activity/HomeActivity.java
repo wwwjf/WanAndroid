@@ -1,6 +1,8 @@
 package com.wengjianfeng.wanandroid.ui.activity;
 
 import android.support.design.widget.NavigationView;
+import android.support.design.widget.TabLayout;
+import android.support.v4.view.ViewPager;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
@@ -11,10 +13,12 @@ import android.support.v7.widget.Toolbar;
 
 import com.wengjianfeng.wanandroid.R;
 import com.wengjianfeng.wanandroid.ui.adapter.HomeAdapter;
+import com.wengjianfeng.wanandroid.ui.adapter.MainFragmentPagerAdapter;
 
 import java.util.ArrayList;
 
 import butterknife.BindView;
+import butterknife.BindViews;
 import butterknife.ButterKnife;
 
 public class HomeActivity extends AppCompatActivity {
@@ -26,11 +30,17 @@ public class HomeActivity extends AppCompatActivity {
     Toolbar mToolbar;
 
 
-    @BindView(R.id.recyclerView_main)
-    RecyclerView mRecyclerView;
+//    @BindView(R.id.recyclerView_main)
+//    RecyclerView mRecyclerView;
 
     @BindView(R.id.navigationView)
     NavigationView mNavigationView;
+
+    @BindView(R.id.viewPager_main)
+    ViewPager mViewPager;
+
+    @BindView(R.id.tabLayout_main)
+    TabLayout mTabLayout;
 
 
     @Override
@@ -53,17 +63,18 @@ public class HomeActivity extends AppCompatActivity {
         mDrawerLayout.setDrawerListener(toggle);
         toggle.syncState();
 
-        //
-        LinearLayoutManager layoutManager = new LinearLayoutManager(this, LinearLayoutManager.VERTICAL,false);
+        /*LinearLayoutManager layoutManager = new LinearLayoutManager(this, LinearLayoutManager.VERTICAL,false);
         mRecyclerView.setLayoutManager(layoutManager);
         ArrayList<String> data = new ArrayList();
         for (int i = 0;i<100;i++) {
             data.add(i+"");
         }
-
         HomeAdapter homeAdapter = new HomeAdapter(R.layout.adapter_home,data);
-        mRecyclerView.setAdapter(homeAdapter);
+        mRecyclerView.setAdapter(homeAdapter);*/
 
+        MainFragmentPagerAdapter pagerAdapter = new MainFragmentPagerAdapter(getSupportFragmentManager());
+        mViewPager.setAdapter(pagerAdapter);
+        mTabLayout.setupWithViewPager(mViewPager);
 
     }
 
