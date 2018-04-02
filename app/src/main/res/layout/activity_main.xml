@@ -38,8 +38,8 @@
             android:layout_height="wrap_content"
             android:layout_gravity="bottom"
             android:background="#FFFFFF"
-            app:layout_behavior="@string/bottom_behavior"
             app:tabSelectedTextColor="@android:color/holo_red_light" />
+        <!--app:layout_behavior="@string/bottom_behavior"-->
     </android.support.design.widget.CoordinatorLayout>
 
     <android.support.design.widget.NavigationView

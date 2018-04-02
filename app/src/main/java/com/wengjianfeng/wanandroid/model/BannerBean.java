@@ -1,12 +1,15 @@
 package com.wengjianfeng.wanandroid.model;
 
+import java.io.Serializable;
+
 /**
  * Created by wengjianfeng on 2018/3/16.
  */
 
-public class BannerBean {
+public class BannerBean implements Serializable {
 
 
+    private static final long serialVersionUID = -2644725493354646633L;
     /**
      * desc : 一起来做个App吧
      * id : 10

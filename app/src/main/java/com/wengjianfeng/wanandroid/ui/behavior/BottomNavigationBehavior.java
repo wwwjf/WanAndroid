@@ -25,13 +25,17 @@ public class BottomNavigationBehavior extends CoordinatorLayout.Behavior<View> {
     // 垂直滑动
 
     @Override
-    public boolean onStartNestedScroll(@NonNull CoordinatorLayout coordinatorLayout, @NonNull View child, @NonNull View directTargetChild, @NonNull View target, int axes, int type) {
+    public boolean onStartNestedScroll(@NonNull CoordinatorLayout coordinatorLayout,
+                                       @NonNull View child, @NonNull View directTargetChild,
+                                       @NonNull View target, int axes, int type) {
         return axes == ViewCompat.SCROLL_AXIS_VERTICAL;
     }
 
     @Override
-    public void onNestedPreScroll(@NonNull CoordinatorLayout coordinatorLayout, @NonNull View child, @NonNull View target, int dx, int dy, @NonNull int[] consumed, int type) {
-        Log.i("onNestedPreScroll","dx="+dx+"---dy="+dy);
+    public void onNestedPreScroll(@NonNull CoordinatorLayout coordinatorLayout,
+                                  @NonNull View child, @NonNull View target,
+                                  int dx, int dy, @NonNull int[] consumed, int type) {
+//        Log.i("onNestedPreScroll","dx="+dx+"---dy="+dy);
         if(dy > 0 && Math.abs(dx) < 10){//上滑隐藏
             if(outAnimator == null){
                 outAnimator = ObjectAnimator.ofFloat(child,"translationY",0,child.getHeight());
