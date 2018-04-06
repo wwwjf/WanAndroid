@@ -65,7 +65,7 @@ public class HomeActivity extends AppCompatActivity {
         for (int i = 0;i<100;i++) {
             data.add(i+"");
         }
-        HomeAdapter homeAdapter = new HomeAdapter(R.layout.adapter_home,data);
+        ArticleAdapter homeAdapter = new ArticleAdapter(R.layout.adapter_article,data);
         mRecyclerView.setAdapter(homeAdapter);*/
 
         MainFragmentPagerAdapter pagerAdapter = new MainFragmentPagerAdapter(getSupportFragmentManager());

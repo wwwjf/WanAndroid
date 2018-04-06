@@ -1,5 +1,6 @@
 package com.wengjianfeng.wanandroid.ui.fragment;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -9,12 +10,17 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
+import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.wengjianfeng.wanandroid.R;
-import com.wengjianfeng.wanandroid.helper.ApiBanner;
-import com.wengjianfeng.wanandroid.model.BannerBean;
+import com.wengjianfeng.wanandroid.helper.api;
+import com.wengjianfeng.wanandroid.model.pojo.ArticleBean;
+import com.wengjianfeng.wanandroid.model.pojo.BannerBean;
 import com.wengjianfeng.wanandroid.model.BaseResponse;
-import com.wengjianfeng.wanandroid.ui.adapter.HomeAdapter;
+import com.wengjianfeng.wanandroid.model.pojovo.ArticleListBean;
+import com.wengjianfeng.wanandroid.ui.activity.WebActivity;
+import com.wengjianfeng.wanandroid.ui.adapter.ArticleAdapter;
 import com.wengjianfeng.wanandroid.utils.GlideImageLoader;
 import com.youth.banner.Banner;
 import com.youth.banner.BannerConfig;
@@ -38,19 +44,18 @@ public class HomeFragment extends Fragment {
     private String mParam1;
     private String mParam2;
     private Unbinder bind;
-    private HomeAdapter mHomeAdapter;
-    private ArrayList<String> data;
+    private ArticleAdapter mArticleAdapter;
+    private ArrayList<ArticleBean> mArticleList;
     private Banner mBanner;
 
-    @BindView(R.id.recyclerView_home)
-    RecyclerView mRecyclerView;
+    @BindView(R.id.recyclerView_article)
+    RecyclerView mRecyclerViewArticle;
 
 
 //    @BindView(R.id.banner_home)
 //    Banner mBanner;
 
     public HomeFragment() {
-        // Required empty public constructor
     }
 
     public static HomeFragment newInstance(String param1, String param2) {
@@ -77,29 +82,52 @@ public class HomeFragment extends Fragment {
         View view = inflater.inflate(R.layout.fragment_home, container, false);
         bind = ButterKnife.bind(this, view);
 
-        data = new ArrayList<>();
-        mHomeAdapter = new HomeAdapter(R.layout.adapter_home, data);
-        mRecyclerView.setAdapter(mHomeAdapter);
+        mArticleList = new ArrayList<>();
+        mArticleAdapter = new ArticleAdapter(getActivity(), mArticleList);
+        mRecyclerViewArticle.setAdapter(mArticleAdapter);
+        mArticleAdapter.setOnItemClickListener(new BaseQuickAdapter.OnItemClickListener() {
+            @Override
+            public void onItemClick(BaseQuickAdapter adapter, View view, int position) {
+                ArticleBean article = (ArticleBean) adapter.getData().get(position);
+
+                String url = article.getLink();
+                String title = article.getTitle();
+                Log.i(TAG, "onItemClick: url="+url);
+                Intent intent = new Intent(getActivity(), WebActivity.class);
+                intent.putExtra("url",url);
+                intent.putExtra("title",title);
+                startActivity(intent);
+
+            }
+        });
+        mArticleAdapter.setOnItemChildClickListener(new BaseQuickAdapter.OnItemChildClickListener() {
+            @Override
+            public void onItemChildClick(BaseQuickAdapter adapter, View view, int position) {
+                Toast.makeText(getActivity(), "点我收藏", Toast.LENGTH_SHORT).show();
+            }
+        });
 
         View headerView = View.inflate(getActivity(),R.layout.layout_banner,null);
         mBanner = headerView.findViewById(R.id.banner_home);
         mBanner.setBannerStyle(BannerConfig.CIRCLE_INDICATOR_TITLE_INSIDE);
-        mHomeAdapter.addHeaderView(headerView);
+        mArticleAdapter.addHeaderView(headerView);
         return view;
+    }
+
+    @Override
+    public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+
     }
 
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
         LinearLayoutManager layoutManager = new LinearLayoutManager(getActivity());
-        mRecyclerView.setLayoutManager(layoutManager);
-        for (int i = 0; i < 100; i++) {
-            data.add(i + "");
-        }
-        mHomeAdapter.notifyDataSetChanged();
+        mRecyclerViewArticle.setLayoutManager(layoutManager);
 
-        ApiBanner apiBanner = new ApiBanner();
-        apiBanner.getBannerData(new Callback<BaseResponse<List<BannerBean>>>() {
+        api api = new api();
+        api.getBannerData(new Callback<BaseResponse<List<BannerBean>>>() {
             @Override
             public void onResponse(Call<BaseResponse<List<BannerBean>>> call,
                                    Response<BaseResponse<List<BannerBean>>> response) {
@@ -120,7 +148,12 @@ public class HomeFragment extends Fragment {
                     @Override
                     public void OnBannerClick(int position) {
                         String url = bannerBeanList.get(position).getUrl();
+                        String title = bannerBeanList.get(position).getTitle();
                         Log.i(TAG, "OnBannerClick: url="+url);
+                        Intent intent = new Intent(getActivity(), WebActivity.class);
+                        intent.putExtra("url",url);
+                        intent.putExtra("title",title);
+                        startActivity(intent);
                     }
                 });
             }
@@ -130,6 +163,22 @@ public class HomeFragment extends Fragment {
 
             }
         });
+        api.getArticleListData(new Callback<BaseResponse<ArticleListBean>>() {
+            @Override
+            public void onResponse(Call<BaseResponse<ArticleListBean>> call,
+                                   Response<BaseResponse<ArticleListBean>> response) {
+                mArticleList.addAll(response.body().getData().getDatas());
+                for (ArticleBean articleBean : mArticleList) {
+                    Log.i(TAG, "onResponse: "+articleBean.getAuthor());
+                }
+//                mArticleAdapter.notifyDataSetChanged();
+            }
+
+            @Override
+            public void onFailure(Call<BaseResponse<ArticleListBean>> call, Throwable t) {
+
+            }
+        },0);
     }
 
     @Override

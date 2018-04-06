@@ -47,4 +47,10 @@ dependencies {
     implementation 'com.squareup.retrofit2:converter-gson:2.1.0'
     implementation 'com.orhanobut:logger:2.2.0'
 
+    implementation 'com.just.agentweb:agentweb:4.0.2' // (必选)
+    implementation 'com.just.agentweb:download:4.0.2' // (可选)
+    implementation 'com.just.agentweb:filechooser:4.0.2'// (可选)
+
+    implementation 'com.zhy:autolayout:1.4.5'
+
 }

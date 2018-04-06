@@ -1,4 +1,4 @@
-package com.wengjianfeng.wanandroid.model;
+package com.wengjianfeng.wanandroid.model.pojo;
 
 import java.io.Serializable;
 

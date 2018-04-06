@@ -16,5 +16,10 @@ public class WanApp extends Application {
     public void onCreate() {
         super.onCreate();
         Logger.addLogAdapter(new AndroidLogAdapter());
+        initAutoLayout();
+    }
+
+    private void initAutoLayout() {
+
     }
 }
