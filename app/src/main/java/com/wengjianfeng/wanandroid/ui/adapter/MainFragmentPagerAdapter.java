@@ -5,7 +5,7 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 
 import com.wengjianfeng.wanandroid.ui.fragment.HomeFragment;
-import com.wengjianfeng.wanandroid.ui.fragment.KnowledgeFragment;
+import com.wengjianfeng.wanandroid.ui.fragment.ChapterFragment;
 import com.wengjianfeng.wanandroid.ui.fragment.UserFragment;
 
 /**
@@ -14,7 +14,7 @@ import com.wengjianfeng.wanandroid.ui.fragment.UserFragment;
 
 public class MainFragmentPagerAdapter extends FragmentPagerAdapter {
 
-    private String[] mTabTitles = new String[]{"首页","知识体系","我的"};
+    private String[] mTabTitles = new String[]{"首页","知识体系"};
 
     public MainFragmentPagerAdapter(FragmentManager fm) {
         super(fm);
@@ -25,9 +25,9 @@ public class MainFragmentPagerAdapter extends FragmentPagerAdapter {
 
         switch (position){
             case 0:
-                return HomeFragment.newInstance("0","homeFragment");
+                return HomeFragment.newInstance("0","articleFragment");
             case 1:
-                return KnowledgeFragment.newInstance("1","knowledgeFragment");
+                return ChapterFragment.newInstance("1","chapterFragment");
             case 2:
                 return UserFragment.newInstance("2","userFragment");
         }

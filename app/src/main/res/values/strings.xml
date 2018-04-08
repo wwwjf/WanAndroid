@@ -5,6 +5,8 @@
 
 
     <!--iconfont字体图标-->
+
+    <string name="tab_next">&#xe609; </string> <!--前进 '>' -->
     <string name="tab_left">&#xe620; </string> <!--左对齐-->
     <string name="tab_right">&#xe618; </string> <!--右对齐-->
     <string name="ic_hot">&#xe66d; </string> <!--火-->

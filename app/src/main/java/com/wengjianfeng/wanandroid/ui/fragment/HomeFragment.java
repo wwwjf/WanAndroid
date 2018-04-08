@@ -14,7 +14,7 @@ import android.widget.Toast;
 
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.wengjianfeng.wanandroid.R;
-import com.wengjianfeng.wanandroid.helper.api;
+import com.wengjianfeng.wanandroid.helper.Api;
 import com.wengjianfeng.wanandroid.model.pojo.ArticleBean;
 import com.wengjianfeng.wanandroid.model.pojo.BannerBean;
 import com.wengjianfeng.wanandroid.model.BaseResponse;
@@ -83,6 +83,8 @@ public class HomeFragment extends Fragment {
         bind = ButterKnife.bind(this, view);
 
         mArticleList = new ArrayList<>();
+        LinearLayoutManager layoutManager = new LinearLayoutManager(getActivity());
+        mRecyclerViewArticle.setLayoutManager(layoutManager);
         mArticleAdapter = new ArticleAdapter(getActivity(), mArticleList);
         mRecyclerViewArticle.setAdapter(mArticleAdapter);
         mArticleAdapter.setOnItemClickListener(new BaseQuickAdapter.OnItemClickListener() {
@@ -123,10 +125,8 @@ public class HomeFragment extends Fragment {
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-        LinearLayoutManager layoutManager = new LinearLayoutManager(getActivity());
-        mRecyclerViewArticle.setLayoutManager(layoutManager);
 
-        api api = new api();
+        Api api = new Api();
         api.getBannerData(new Callback<BaseResponse<List<BannerBean>>>() {
             @Override
             public void onResponse(Call<BaseResponse<List<BannerBean>>> call,
@@ -168,9 +168,6 @@ public class HomeFragment extends Fragment {
             public void onResponse(Call<BaseResponse<ArticleListBean>> call,
                                    Response<BaseResponse<ArticleListBean>> response) {
                 mArticleList.addAll(response.body().getData().getDatas());
-                for (ArticleBean articleBean : mArticleList) {
-                    Log.i(TAG, "onResponse: "+articleBean.getAuthor());
-                }
 //                mArticleAdapter.notifyDataSetChanged();
             }
 

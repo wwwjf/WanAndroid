@@ -3,6 +3,7 @@ package com.wengjianfeng.wanandroid.helper;
 import com.wengjianfeng.wanandroid.model.pojo.BannerBean;
 import com.wengjianfeng.wanandroid.model.BaseResponse;
 import com.wengjianfeng.wanandroid.model.pojovo.ArticleListBean;
+import com.wengjianfeng.wanandroid.model.pojovo.ChapterBean;
 
 import java.util.List;
 
@@ -22,5 +23,8 @@ public interface WanApi {
 
     @GET("article/list/{page}/json")
     Call<BaseResponse<ArticleListBean>> articleList(@Path("page") int page);
+
+    @GET("tree/json")
+    Call<BaseResponse<List<ChapterBean>>> chapterList();
 
 }

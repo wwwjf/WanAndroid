@@ -26,10 +26,6 @@ public class HomeActivity extends AppCompatActivity {
     @BindView(R.id.toolbar)
     Toolbar mToolbar;
 
-
-//    @BindView(R.id.recyclerView_main)
-//    RecyclerView mRecyclerView;
-
     @BindView(R.id.navigationView)
     NavigationView mNavigationView;
 
@@ -58,15 +54,6 @@ public class HomeActivity extends AppCompatActivity {
                 this, mDrawerLayout, mToolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
         mDrawerLayout.setDrawerListener(toggle);
         toggle.syncState();
-
-        /*LinearLayoutManager layoutManager = new LinearLayoutManager(this, LinearLayoutManager.VERTICAL,false);
-        mRecyclerView.setLayoutManager(layoutManager);
-        ArrayList<String> data = new ArrayList();
-        for (int i = 0;i<100;i++) {
-            data.add(i+"");
-        }
-        ArticleAdapter homeAdapter = new ArticleAdapter(R.layout.adapter_article,data);
-        mRecyclerView.setAdapter(homeAdapter);*/
 
         MainFragmentPagerAdapter pagerAdapter = new MainFragmentPagerAdapter(getSupportFragmentManager());
         mViewPager.setAdapter(pagerAdapter);
