@@ -1,7 +1,6 @@
 package com.wengjianfeng.wanandroid.app;
 
 import android.app.Application;
-import android.util.Log;
 
 import com.orhanobut.logger.AndroidLogAdapter;
 import com.orhanobut.logger.Logger;
@@ -16,10 +15,9 @@ public class WanApp extends Application {
     public void onCreate() {
         super.onCreate();
         Logger.addLogAdapter(new AndroidLogAdapter());
-        initAutoLayout();
-    }
-
-    private void initAutoLayout() {
-
+        /*if (LeakCanary.isInAnalyzerProcess(this)){
+            return;
+        }
+        LeakCanary.install(this);*/
     }
 }

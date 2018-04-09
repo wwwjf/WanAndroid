@@ -16,4 +16,8 @@ public class WanConstants {
     public final static String ERROR_CODE = "errorcode";
     // 接口返回错误信息
     public final static String ERROR_MSG = "errormsg";
+
+    public static final String SPLASH_HTTP_URL = "https://bing.ioliu.cn/v1";
+
+
 }

@@ -10,6 +10,7 @@ import com.wengjianfeng.wanandroid.model.pojo.ChapterChildrenBean;
 import com.wengjianfeng.wanandroid.model.pojovo.ChapterBean;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  * Created by wengjianfeng on 2018/4/9.

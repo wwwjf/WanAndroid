@@ -5,11 +5,14 @@ import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
+import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
 import com.wengjianfeng.wanandroid.R;
+import com.wengjianfeng.wanandroid.base.FragmentKeyDown;
 import com.wengjianfeng.wanandroid.helper.Api;
 import com.wengjianfeng.wanandroid.model.BaseResponse;
 import com.wengjianfeng.wanandroid.model.pojovo.ChapterBean;
@@ -25,7 +28,8 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-public class ChapterFragment extends Fragment {
+public class ChapterFragment extends Fragment implements FragmentKeyDown{
+    public static final String TAG = ChapterFragment.class.getSimpleName();
     private static final String ARG_PARAM1 = "param1";
     private static final String ARG_PARAM2 = "param2";
 
@@ -74,7 +78,6 @@ public class ChapterFragment extends Fragment {
         mChapterList = new ArrayList<>();
         mChapterAdapter = new ChapterAdapter(getActivity(),mChapterList);
         mRecyclerViewChapter.setAdapter(mChapterAdapter);
-
         return view;
     }
 
@@ -102,5 +105,11 @@ public class ChapterFragment extends Fragment {
     public void onDestroy() {
         super.onDestroy();
         unbinder.unbind();
+    }
+
+    @Override
+    public boolean onFragmentKeyDown(int keyCode, KeyEvent event) {
+        Log.i(TAG, "onFragmentKeyDown: keCode="+keyCode);
+        return false;
     }
 }
