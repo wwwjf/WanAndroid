@@ -1,5 +1,6 @@
 package com.wengjianfeng.wanandroid.ui.activity;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.NavigationView;
 import android.support.design.widget.TabLayout;
@@ -12,7 +13,9 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.Gravity;
+import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.Toast;
 
 import com.wengjianfeng.wanandroid.R;
 import com.wengjianfeng.wanandroid.ui.adapter.MainFragmentPagerAdapter;
@@ -27,7 +30,7 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 
 public class HomeActivity extends AppCompatActivity {
-    public static final String TAG =HomeActivity.class.getSimpleName();
+    public static final String TAG = HomeActivity.class.getSimpleName();
 
     @BindView(R.id.drawerLayout)
     DrawerLayout mDrawerLayout;
@@ -55,7 +58,22 @@ public class HomeActivity extends AppCompatActivity {
 
         setViewPager();
         mToolbar.setTitle(mPagerAdapter.getPageTitle(0));
+
         setSupportActionBar(mToolbar);
+        //listener事件需在setSupport之后才能生效
+        mToolbar.setOnMenuItemClickListener(new Toolbar.OnMenuItemClickListener() {
+            @Override
+            public boolean onMenuItemClick(MenuItem item) {
+                switch (item.getItemId()) {
+                    case R.id.menu_item_search:
+                        startActivity(new Intent(HomeActivity.this,SearchActivity.class));
+                        break;
+                    default:
+                        break;
+                }
+                return true;
+            }
+        });
         //添加menu图标
         //方法1、menu图标没动画 设置actionbar图标，并重写onOptionsItemSelected方法
         /*ActionBar actionBar = getSupportActionBar();
@@ -108,4 +126,11 @@ public class HomeActivity extends AppCompatActivity {
         }
         return super.onOptionsItemSelected(item);
     }*/
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.menu_toolbar, menu);
+        return true;
+    }
+
 }
