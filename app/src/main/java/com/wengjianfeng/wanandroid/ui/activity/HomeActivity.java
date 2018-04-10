@@ -7,15 +7,14 @@ import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.view.ViewPager;
 import android.support.v4.widget.DrawerLayout;
-import android.support.v7.app.ActionBar;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
-import android.view.Gravity;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.widget.Toast;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.ImageView;
 
 import com.wengjianfeng.wanandroid.R;
 import com.wengjianfeng.wanandroid.ui.adapter.MainFragmentPagerAdapter;
@@ -35,7 +34,7 @@ public class HomeActivity extends AppCompatActivity {
     @BindView(R.id.drawerLayout)
     DrawerLayout mDrawerLayout;
 
-    @BindView(R.id.toolbar)
+    @BindView(R.id.toolbar_main)
     Toolbar mToolbar;
 
     @BindView(R.id.navigationView)
@@ -79,7 +78,6 @@ public class HomeActivity extends AppCompatActivity {
         /*ActionBar actionBar = getSupportActionBar();
         actionBar.setHomeAsUpIndicator(R.drawable.ic_menu);
         actionBar.setDisplayHomeAsUpEnabled(true);*/
-//        https://chanyouji.com/api/destinations/45.json
         //方法2 menu图标有动画
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
                 this, mDrawerLayout, mToolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
@@ -98,7 +96,7 @@ public class HomeActivity extends AppCompatActivity {
 
         mPagerAdapter = new MainFragmentPagerAdapter(getSupportFragmentManager(), fragmentList);
         mViewPager.setAdapter(mPagerAdapter);
-        mTabLayout.setupWithViewPager(mViewPager);
+        /*mTabLayout.setupWithViewPager(mViewPager);
         mTabLayout.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
             @Override
             public void onTabSelected(TabLayout.Tab tab) {
@@ -114,7 +112,9 @@ public class HomeActivity extends AppCompatActivity {
             public void onTabReselected(TabLayout.Tab tab) {
                 mToolbar.setTitle(tab.getText());
             }
-        });
+        });*/
+        mTabLayout.addOnTabSelectedListener(new TabLayout.ViewPagerOnTabSelectedListener(mViewPager));
+        mViewPager.addOnPageChangeListener(new TabLayout.TabLayoutOnPageChangeListener(mTabLayout));
     }
 
     /*@Override
@@ -133,4 +133,29 @@ public class HomeActivity extends AppCompatActivity {
         return true;
     }
 
+    @Override
+    protected void onResume() {
+        super.onResume();
+        changeIconImgBottomMargin(mTabLayout,-0);
+
+    }
+
+    /**
+     * TabLayout icon和文字同时存在 调整间隔
+     * @param parent
+     * @param px
+     */
+    private void changeIconImgBottomMargin(ViewGroup parent, int px){
+        for(int i = 0; i < parent.getChildCount(); i++){
+            View child = parent.getChildAt(i);
+            if(child instanceof ViewGroup){
+                changeIconImgBottomMargin((ViewGroup) child, px);
+            }
+            else if(child instanceof ImageView){
+                ViewGroup.MarginLayoutParams lp = ((ViewGroup.MarginLayoutParams) child.getLayoutParams());
+                lp.bottomMargin = px;
+                child.requestLayout();
+            }
+        }
+    }
 }

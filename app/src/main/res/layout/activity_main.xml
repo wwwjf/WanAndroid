@@ -18,12 +18,12 @@
             android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar">
 
             <android.support.v7.widget.Toolbar
-                android:id="@+id/toolbar"
+                android:id="@+id/toolbar_main"
                 android:layout_width="match_parent"
+                app:contentInsetStartWithNavigation="0dp"
                 android:layout_height="wrap_content"
                 android:minHeight="?attr/actionBarSize"
-                app:layout_scrollFlags="scroll|enterAlways">
-            </android.support.v7.widget.Toolbar>
+                app:layout_scrollFlags="scroll|enterAlways"/>
 
 
         </android.support.design.widget.AppBarLayout>
@@ -37,11 +37,29 @@
         <android.support.design.widget.TabLayout
             android:id="@+id/tabLayout_main"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="56dp"
             android:layout_gravity="bottom"
             android:background="#FFFFFF"
             app:layout_behavior="@string/bottom_behavior"
-            app:tabSelectedTextColor="@android:color/holo_red_light" />
+            app:tabGravity="fill"
+            app:tabMode="fixed"
+            android:elevation="5dp"
+            app:tabSelectedTextColor="@color/colorAccent"
+            app:tabTextAppearance="@style/MyTabItemText"
+            app:tabTextColor="@color/text0">
+
+            <android.support.design.widget.TabItem
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:icon="@drawable/selector_home"
+                android:text="首页" />
+
+            <android.support.design.widget.TabItem
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:icon="@drawable/selector_chapter"
+                android:text="知识体系" />
+        </android.support.design.widget.TabLayout>
     </android.support.design.widget.CoordinatorLayout>
 
     <android.support.design.widget.NavigationView
