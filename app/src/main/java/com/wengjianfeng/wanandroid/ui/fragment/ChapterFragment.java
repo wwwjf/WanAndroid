@@ -13,7 +13,7 @@ import android.view.ViewGroup;
 
 import com.wengjianfeng.wanandroid.R;
 import com.wengjianfeng.wanandroid.base.FragmentKeyDown;
-import com.wengjianfeng.wanandroid.helper.Api;
+import com.wengjianfeng.wanandroid.helper.ApiUtil;
 import com.wengjianfeng.wanandroid.model.BaseResponse;
 import com.wengjianfeng.wanandroid.model.pojovo.ChapterBean;
 import com.wengjianfeng.wanandroid.ui.adapter.ChapterAdapter;
@@ -85,8 +85,7 @@ public class ChapterFragment extends Fragment implements FragmentKeyDown{
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-        Api api = new Api();
-        api.getChapterListData(new Callback<BaseResponse<List<ChapterBean>>>() {
+        ApiUtil.getChapterListData(new Callback<BaseResponse<List<ChapterBean>>>() {
             @Override
             public void onResponse(Call<BaseResponse<List<ChapterBean>>> call,
                                    Response<BaseResponse<List<ChapterBean>>> response) {

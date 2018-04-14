@@ -14,7 +14,7 @@ import android.widget.Toast;
 
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.wengjianfeng.wanandroid.R;
-import com.wengjianfeng.wanandroid.helper.Api;
+import com.wengjianfeng.wanandroid.helper.ApiUtil;
 import com.wengjianfeng.wanandroid.model.pojo.ArticleBean;
 import com.wengjianfeng.wanandroid.model.pojo.BannerBean;
 import com.wengjianfeng.wanandroid.model.BaseResponse;
@@ -126,8 +126,7 @@ public class HomeFragment extends Fragment {
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
 
-        Api api = new Api();
-        api.getBannerData(new Callback<BaseResponse<List<BannerBean>>>() {
+        ApiUtil.getBannerData(new Callback<BaseResponse<List<BannerBean>>>() {
             @Override
             public void onResponse(Call<BaseResponse<List<BannerBean>>> call,
                                    Response<BaseResponse<List<BannerBean>>> response) {
@@ -136,7 +135,6 @@ public class HomeFragment extends Fragment {
                 List<String> imagePathList = new ArrayList<>();
                 List<String> titleList = new ArrayList<>();
                 for (BannerBean bannerBean : bannerBeanList) {
-                    Log.i(TAG, "onResponse: imagePath="+bannerBean.getImagePath());
                     imagePathList.add(bannerBean.getImagePath());
                     titleList.add(bannerBean.getTitle());
                 }
@@ -163,7 +161,7 @@ public class HomeFragment extends Fragment {
 
             }
         });
-        api.getArticleListData(new Callback<BaseResponse<ArticleListBean>>() {
+        ApiUtil.getArticleListData(new Callback<BaseResponse<ArticleListBean>>() {
             @Override
             public void onResponse(Call<BaseResponse<ArticleListBean>> call,
                                    Response<BaseResponse<ArticleListBean>> response) {

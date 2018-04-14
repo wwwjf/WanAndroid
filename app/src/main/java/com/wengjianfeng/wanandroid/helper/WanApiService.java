@@ -2,20 +2,26 @@ package com.wengjianfeng.wanandroid.helper;
 
 import com.wengjianfeng.wanandroid.model.pojo.BannerBean;
 import com.wengjianfeng.wanandroid.model.BaseResponse;
+import com.wengjianfeng.wanandroid.model.pojo.HotWordBean;
 import com.wengjianfeng.wanandroid.model.pojovo.ArticleListBean;
 import com.wengjianfeng.wanandroid.model.pojovo.ChapterBean;
 
 import java.util.List;
 
+import okhttp3.RequestBody;
 import retrofit2.Call;
+import retrofit2.http.Body;
+import retrofit2.http.Field;
+import retrofit2.http.FormUrlEncoded;
 import retrofit2.http.GET;
+import retrofit2.http.POST;
 import retrofit2.http.Path;
 
 /**
  * Created by wengjianfeng on 2018/4/1.
  */
 
-public interface WanApi {
+public interface WanApiService {
 
     @GET("banner/json")
     Call<BaseResponse<List<BannerBean>>> banner();
@@ -27,4 +33,10 @@ public interface WanApi {
     @GET("tree/json")
     Call<BaseResponse<List<ChapterBean>>> chapterList();
 
+    @GET("hotkey/json")
+    Call<BaseResponse<List<HotWordBean>>> hotWordList();
+
+    @POST("article/query/{page}/json")
+    @FormUrlEncoded
+    Call<BaseResponse<ArticleListBean>> searchArticleList(@Path("page") int page, @Field("k") String keyWord);
 }

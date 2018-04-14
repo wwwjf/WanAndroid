@@ -1,6 +1,7 @@
 package com.wengjianfeng.wanandroid.ui.activity;
 
 import android.content.Intent;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.design.widget.NavigationView;
 import android.support.design.widget.TabLayout;
@@ -14,6 +15,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.WindowManager;
 import android.widget.ImageView;
 
 import com.wengjianfeng.wanandroid.R;
@@ -52,6 +54,7 @@ public class HomeActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+//        initImmersive();
 
         ButterKnife.bind(this);
 
@@ -155,6 +158,19 @@ public class HomeActivity extends AppCompatActivity {
                 ViewGroup.MarginLayoutParams lp = ((ViewGroup.MarginLayoutParams) child.getLayoutParams());
                 lp.bottomMargin = px;
                 child.requestLayout();
+            }
+        }
+    }
+
+    private void initImmersive() {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
+            WindowManager.LayoutParams localLayoutParams = getWindow().getAttributes();
+            localLayoutParams.flags = (WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS | localLayoutParams.flags);
+            if (Build.VERSION.SDK_INT < Build.VERSION_CODES.LOLLIPOP) {
+                //将侧边栏顶部延伸至status bar
+                mDrawerLayout.setFitsSystemWindows(true);
+                //将主页面顶部延伸至status bar;虽默认为false,但经测试,DrawerLayout需显示设置
+                mDrawerLayout.setClipToPadding(false);
             }
         }
     }

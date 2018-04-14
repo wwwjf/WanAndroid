@@ -10,11 +10,11 @@ import retrofit2.converter.gson.GsonConverterFactory;
  * Created by wengjianfeng on 2018/4/1.
  */
 
-public class HttpHelper {
-    private static HttpHelper httpHelper;
+public class RetrofitClient {
+    private static RetrofitClient retrofitClient;
     private Retrofit retrofit;
 
-    private HttpHelper() {
+    private RetrofitClient() {
         OkHttpClient okHttpClient = new OkHttpClient.Builder()
                 .build();
         retrofit = new Retrofit.Builder()
@@ -24,11 +24,11 @@ public class HttpHelper {
                 .build();
     }
 
-    public static HttpHelper getInstance() {
-        if (httpHelper == null) {
-            httpHelper = new HttpHelper();
+    public static RetrofitClient getInstance() {
+        if (retrofitClient == null) {
+            retrofitClient = new RetrofitClient();
         }
-        return httpHelper;
+        return retrofitClient;
     }
 
     public <T> T create(Class<T> service) {
