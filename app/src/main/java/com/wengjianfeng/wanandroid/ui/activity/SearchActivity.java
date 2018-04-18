@@ -11,6 +11,7 @@ import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.jude.swipbackhelper.SwipeBackHelper;
 import com.wengjianfeng.wanandroid.R;
 import com.wengjianfeng.wanandroid.helper.ApiUtil;
@@ -30,7 +31,7 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-public class SearchActivity extends AppCompatActivity {
+public class SearchActivity extends AppCompatActivity implements BaseQuickAdapter.RequestLoadMoreListener {
 
     public static final String TAG = SearchActivity.class.getSimpleName();
 
@@ -81,9 +82,14 @@ public class SearchActivity extends AppCompatActivity {
             public boolean onTagClick(View view, int position, FlowLayout parent) {
                 HotWordBean hotWordBean = (HotWordBean) mFlowLayoutHotKeyWord.getAdapter().getItem(position);
                 Log.e(TAG, "onTagClick: name="+hotWordBean.getName());
+                mClearEditTextKeyWord.setText(hotWordBean.getName()+" ");
+                mClearEditTextKeyWord.setSelection(hotWordBean.getName().length()+1);
+                searchArticle(hotWordBean.getName());
                 return false;
             }
         });
+
+
 
         mClearEditTextKeyWord.setOnKeyListener(new View.OnKeyListener() {
             @Override
@@ -111,6 +117,7 @@ public class SearchActivity extends AppCompatActivity {
 
     }
 
+
     /**
      * 搜索
      * @param keyWord
@@ -124,6 +131,7 @@ public class SearchActivity extends AppCompatActivity {
                 Log.e(TAG, "onResponse: total=0" );
                 if (response.body() == null)
                 Log.e(TAG, "onResponse: response.body is null" );
+                mLinearLayoutHotWord.setVisibility(View.GONE);//热词隐藏
                 Log.e(TAG, "onResponse: "+response.body().getData().toString() );
 
             }
@@ -147,5 +155,10 @@ public class SearchActivity extends AppCompatActivity {
     protected void onDestroy() {
         super.onDestroy();
         SwipeBackHelper.onDestroy(this);
+    }
+
+    @Override
+    public void onLoadMoreRequested() {
+
     }
 }

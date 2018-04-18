@@ -57,4 +57,10 @@ dependencies {
 
     implementation 'com.hyman:flowlayout-lib:1.1.2'
 
+    implementation 'com.yanzhenjie:sofia:1.0.5'
+
+    implementation 'in.srain.cube:ultra-ptr:1.0.11'
+
+    implementation 'org.greenrobot:eventbus:3.1.1'
+
 }

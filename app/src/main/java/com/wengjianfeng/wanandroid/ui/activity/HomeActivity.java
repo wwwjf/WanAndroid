@@ -3,9 +3,11 @@ package com.wengjianfeng.wanandroid.ui.activity;
 import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.design.widget.NavigationView;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
+import android.support.v4.view.GravityCompat;
 import android.support.v4.view.ViewPager;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
@@ -17,6 +19,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowManager;
 import android.widget.ImageView;
+import android.widget.Toast;
 
 import com.wengjianfeng.wanandroid.R;
 import com.wengjianfeng.wanandroid.ui.adapter.MainFragmentPagerAdapter;
@@ -30,7 +33,8 @@ import java.util.List;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
-public class HomeActivity extends AppCompatActivity {
+public class HomeActivity extends AppCompatActivity
+        implements NavigationView.OnNavigationItemSelectedListener{
     public static final String TAG = HomeActivity.class.getSimpleName();
 
     @BindView(R.id.drawerLayout)
@@ -62,7 +66,7 @@ public class HomeActivity extends AppCompatActivity {
         mToolbar.setTitle(mPagerAdapter.getPageTitle(0));
 
         setSupportActionBar(mToolbar);
-        //listener事件需在setSupport之后才能生效
+        //setOnMenuItemClickListener事件需在setSupport之后才能生效
         mToolbar.setOnMenuItemClickListener(new Toolbar.OnMenuItemClickListener() {
             @Override
             public boolean onMenuItemClick(MenuItem item) {
@@ -84,9 +88,22 @@ public class HomeActivity extends AppCompatActivity {
         //方法2 menu图标有动画
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
                 this, mDrawerLayout, mToolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
-        mDrawerLayout.setDrawerListener(toggle);
+        mDrawerLayout.addDrawerListener(toggle);
         toggle.syncState();
+        mNavigationView.setNavigationItemSelectedListener(this);
+        View headerView = mNavigationView.getHeaderView(0);
+        ImageView ivLogin = headerView.findViewById(R.id.iv_nav_header);
+        ivLogin.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                showLogin();
+            }
+        });
 
+    }
+
+    private void showLogin() {
+        startActivity(new Intent(HomeActivity.this,LoginActivity.class));
     }
 
     private void setViewPager() {
@@ -136,6 +153,7 @@ public class HomeActivity extends AppCompatActivity {
         return true;
     }
 
+
     @Override
     protected void onResume() {
         super.onResume();
@@ -162,16 +180,20 @@ public class HomeActivity extends AppCompatActivity {
         }
     }
 
-    private void initImmersive() {
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
-            WindowManager.LayoutParams localLayoutParams = getWindow().getAttributes();
-            localLayoutParams.flags = (WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS | localLayoutParams.flags);
-            if (Build.VERSION.SDK_INT < Build.VERSION_CODES.LOLLIPOP) {
-                //将侧边栏顶部延伸至status bar
-                mDrawerLayout.setFitsSystemWindows(true);
-                //将主页面顶部延伸至status bar;虽默认为false,但经测试,DrawerLayout需显示设置
-                mDrawerLayout.setClipToPadding(false);
-            }
+    @Override
+    public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+        int itemId = item.getItemId();
+        switch (itemId){
+            case R.id.nav_collect:
+                //检测是否登录
+                break;
+            case R.id.nav_setting:
+                break;
+            case R.id.nav_about:
+                break;
         }
+
+        mDrawerLayout.closeDrawer(GravityCompat.START);
+        return true;
     }
 }
