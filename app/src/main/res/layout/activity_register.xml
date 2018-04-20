@@ -5,10 +5,10 @@
     android:layout_height="match_parent"
     android:paddingLeft="20dp"
     android:paddingRight="20dp"
-    tools:context="com.wengjianfeng.wanandroid.ui.activity.LoginActivity">
+    tools:context="com.wengjianfeng.wanandroid.ui.activity.RegisterActivity">
 
     <ImageView
-        android:id="@+id/iv_login_close"
+        android:id="@+id/iv_register_close"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentRight="true"
@@ -21,12 +21,12 @@
         android:id="@+id/iv_icon"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_above="@id/clearEditText_login_userName"
+        android:layout_above="@id/clearEditText_register_userName"
         android:layout_centerHorizontal="true"
         android:src="@mipmap/ic_launcher_round" />
 
     <com.wengjianfeng.wanandroid.widget.ClearEditText
-        android:id="@+id/clearEditText_login_userName"
+        android:id="@+id/clearEditText_register_userName"
         style="@style/MyEditText"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -38,13 +38,26 @@
         android:drawableStart="@drawable/ic_email" />
 
     <com.wengjianfeng.wanandroid.widget.ClearEditText
-        android:id="@+id/clearEditText_login_password"
+        android:id="@+id/clearEditText_register_password"
         style="@style/MyEditText"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/clearEditText_login_userName"
-        android:layout_marginTop="@dimen/activity_vertical_margin"
         android:hint="请输入密码"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/clearEditText_register_userName"
+        android:layout_marginTop="@dimen/activity_vertical_margin"
+        android:drawableBottom="@drawable/line_gray"
+        android:drawableLeft="@drawable/ic_password"
+        android:drawableStart="@drawable/ic_password"
+        android:gravity="center_vertical"
+        android:inputType="textPassword" />
+    <com.wengjianfeng.wanandroid.widget.ClearEditText
+        android:id="@+id/clearEditText_register_rePassword"
+        style="@style/MyEditText"
+        android:layout_width="match_parent"
+        android:hint="请输入确认密码"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/clearEditText_register_password"
+        android:layout_marginTop="@dimen/activity_vertical_margin"
         android:drawableBottom="@drawable/line_gray"
         android:drawableLeft="@drawable/ic_password"
         android:drawableStart="@drawable/ic_password"
@@ -55,22 +68,11 @@
         android:id="@+id/btn_login"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/clearEditText_login_password"
+        android:layout_below="@+id/clearEditText_register_rePassword"
         android:layout_marginTop="20dp"
         android:background="@drawable/selector_login"
-        android:text="登录"
+        android:text="注册"
         android:textColor="@color/selector_button_text"
         android:textSize="20sp" />
 
-    <Button
-        android:id="@+id/btn_register"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentRight="true"
-        android:layout_below="@+id/btn_login"
-        android:layout_marginTop="10dp"
-        android:background="@null"
-        android:text="注册"
-        android:textColor="@color/text1"
-        android:textSize="16sp" />
 </RelativeLayout>

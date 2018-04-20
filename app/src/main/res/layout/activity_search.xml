@@ -27,14 +27,10 @@
                 android:layout_height="match_parent"
                 android:layout_marginEnd="10dp"
                 android:layout_marginRight="10dp"
-                android:background="@null"
-                android:drawableBottom="@drawable/line"
-                android:drawablePadding="5dp"
+                style="@style/MyEditText"
+                android:drawableBottom="@drawable/line_white"
                 android:imeOptions="actionGo"
                 android:hint="搜索支持多个关键词，用空格隔开"
-                android:lines="1"
-                android:maxLines="1"
-                android:singleLine="true"
                 android:textCursorDrawable="@null" />
         </android.support.v7.widget.Toolbar>
     </android.support.design.widget.AppBarLayout>

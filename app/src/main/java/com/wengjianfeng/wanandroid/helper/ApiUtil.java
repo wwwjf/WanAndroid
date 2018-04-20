@@ -21,6 +21,7 @@ public class ApiUtil {
 
     /**
      * 首页banner数据
+     *
      * @param callback
      */
     public static void getBannerData(Callback<BaseResponse<List<BannerBean>>> callback) {
@@ -31,10 +32,11 @@ public class ApiUtil {
 
     /**
      * 首页文章列表数据
+     *
      * @param callback
-     * @param page 页数
+     * @param page     页数
      */
-    public static void getArticleListData(Callback<BaseResponse<ArticleListBean>> callback,int page) {
+    public static void getArticleListData(Callback<BaseResponse<ArticleListBean>> callback, int page) {
 
         Call<BaseResponse<ArticleListBean>> call = wanApiService.articleList(page);
         call.enqueue(callback);
@@ -43,18 +45,20 @@ public class ApiUtil {
 
     /**
      * 知识体系数据
+     *
      * @param callback
      */
-    public static void getChapterListData(Callback<BaseResponse<List<ChapterBean>>> callback){
+    public static void getChapterListData(Callback<BaseResponse<List<ChapterBean>>> callback) {
         Call<BaseResponse<List<ChapterBean>>> call = wanApiService.chapterList();
         call.enqueue(callback);
     }
 
     /**
      * 搜索热词
+     *
      * @param callback
      */
-    public static void getHotWordListData(Callback<BaseResponse<List<HotWordBean>>> callback){
+    public static void getHotWordListData(Callback<BaseResponse<List<HotWordBean>>> callback) {
 
         Call<BaseResponse<List<HotWordBean>>> call = wanApiService.hotWordList();
         call.enqueue(callback);
@@ -62,15 +66,20 @@ public class ApiUtil {
 
     /**
      * 搜索文章
+     *
      * @param callback
      * @param page
      * @param keyWord
      */
-    public static   void getArticleSearchListData(Callback<BaseResponse<ArticleListBean>> callback,
-                                          int page,String keyWord){
-        Call<BaseResponse<ArticleListBean>> call= wanApiService.searchArticleList(page,keyWord);
+    public static void getArticleSearchListData(Callback<BaseResponse<ArticleListBean>> callback,
+                                                int page, String keyWord) {
+        Call<BaseResponse<ArticleListBean>> call = wanApiService.searchArticleList(page, keyWord);
         call.enqueue(callback);
     }
 
+    public static void requestLogin(Callback<BaseResponse> callback,String userName,String password){
+        Call<BaseResponse> call = wanApiService.requestLogin(userName,password);
+        call.enqueue(callback);
 
+    }
 }

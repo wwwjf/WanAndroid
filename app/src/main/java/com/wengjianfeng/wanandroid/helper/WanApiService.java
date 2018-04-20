@@ -39,4 +39,8 @@ public interface WanApiService {
     @POST("article/query/{page}/json")
     @FormUrlEncoded
     Call<BaseResponse<ArticleListBean>> searchArticleList(@Path("page") int page, @Field("k") String keyWord);
+
+    @POST("user/login")
+    @FormUrlEncoded
+    Call<BaseResponse> requestLogin(@Field("username") String userName, @Field("password") String password);
 }
