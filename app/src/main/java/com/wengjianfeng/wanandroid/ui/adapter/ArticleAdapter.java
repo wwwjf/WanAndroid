@@ -36,7 +36,7 @@ public class ArticleAdapter extends BaseQuickAdapter<ArticleBean,BaseViewHolder>
         TextView tvCollect = helper.itemView.findViewById(R.id.tv_collect);
         if (article.isCollect()) {
             tvCollect.setText(mContext.getString(R.string.ic_collect_sel));
-            tvCollect.setTextColor(mContext.getResources().getColor(R.color.main));
+            tvCollect.setTextColor(mContext.getResources().getColor(R.color.colorPrimary));
         } else {
             tvCollect.setText(mContext.getString(R.string.ic_collect_nor));
             tvCollect.setTextColor(mContext.getResources().getColor(R.color.text3));

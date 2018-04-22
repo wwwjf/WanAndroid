@@ -3,6 +3,7 @@ package com.wengjianfeng.wanandroid.helper;
 import com.wengjianfeng.wanandroid.model.pojo.BannerBean;
 import com.wengjianfeng.wanandroid.model.BaseResponse;
 import com.wengjianfeng.wanandroid.model.pojo.HotWordBean;
+import com.wengjianfeng.wanandroid.model.pojo.UserBean;
 import com.wengjianfeng.wanandroid.model.pojovo.ArticleListBean;
 import com.wengjianfeng.wanandroid.model.pojovo.ChapterBean;
 
@@ -42,5 +43,5 @@ public interface WanApiService {
 
     @POST("user/login")
     @FormUrlEncoded
-    Call<BaseResponse> requestLogin(@Field("username") String userName, @Field("password") String password);
+    Call<BaseResponse<UserBean>> requestLogin(@Field("username") String userName, @Field("password") String password);
 }

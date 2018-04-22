@@ -1,7 +1,6 @@
 package com.wengjianfeng.wanandroid.ui.activity;
 
 import android.content.Intent;
-import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.NavigationView;
@@ -17,11 +16,13 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.WindowManager;
+import android.widget.Button;
 import android.widget.ImageView;
-import android.widget.Toast;
+import android.widget.TextView;
 
 import com.wengjianfeng.wanandroid.R;
+import com.wengjianfeng.wanandroid.manager.UserInfoManager;
+import com.wengjianfeng.wanandroid.model.pojo.UserBean;
 import com.wengjianfeng.wanandroid.ui.adapter.MainFragmentPagerAdapter;
 import com.wengjianfeng.wanandroid.ui.fragment.ChapterFragment;
 import com.wengjianfeng.wanandroid.ui.fragment.HomeFragment;
@@ -87,16 +88,40 @@ public class HomeActivity extends AppCompatActivity
         actionBar.setDisplayHomeAsUpEnabled(true);*/
         //方法2 menu图标有动画
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
-                this, mDrawerLayout, mToolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
+                this, mDrawerLayout, mToolbar,
+                R.string.navigation_drawer_open,
+                R.string.navigation_drawer_close);
         mDrawerLayout.addDrawerListener(toggle);
         toggle.syncState();
+
+
         mNavigationView.setNavigationItemSelectedListener(this);
         View headerView = mNavigationView.getHeaderView(0);
-        ImageView ivLogin = headerView.findViewById(R.id.iv_nav_header);
-        ivLogin.setOnClickListener(new View.OnClickListener() {
+        ImageView ivLogin = headerView.findViewById(R.id.iv_nav_header_icon);
+        TextView tvUserName = headerView.findViewById(R.id.tv_nav_header_userName);
+        Button btnExit = headerView.findViewById(R.id.btn_nav_header_exit);
+
+        if (UserInfoManager.isLogin()){
+            UserBean user = UserInfoManager.getUserInfo();
+            if (user != null) {
+                tvUserName.setText(user.getUsername());
+            }
+            btnExit.setVisibility(View.VISIBLE);
+        } else {
+            tvUserName.setText("未登录");
+            btnExit.setVisibility(View.GONE);
+            ivLogin.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    showLogin();
+                }
+            });
+        }
+
+        btnExit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                showLogin();
+                UserInfoManager.exitUser();
             }
         });
 

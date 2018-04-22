@@ -11,14 +11,21 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.Toast;
 
+import com.blankj.utilcode.util.SPUtils;
 import com.jude.swipbackhelper.SwipeBackHelper;
 import com.wengjianfeng.wanandroid.R;
+import com.wengjianfeng.wanandroid.app.WanConstants;
 import com.wengjianfeng.wanandroid.helper.ApiUtil;
+import com.wengjianfeng.wanandroid.manager.UserInfoManager;
 import com.wengjianfeng.wanandroid.model.BaseResponse;
+import com.wengjianfeng.wanandroid.model.pojo.UserBean;
+
+import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
+import okhttp3.Headers;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -40,6 +47,7 @@ public class LoginActivity extends AppCompatActivity {
 
     @BindView(R.id.btn_register)
     Button mButtonRegister;
+    private UserBean userBean;
 
 
     @Override
@@ -72,15 +80,19 @@ public class LoginActivity extends AppCompatActivity {
                 break;
             case R.id.btn_login:
                 Toast.makeText(this, "登录", Toast.LENGTH_SHORT).show();
-                ApiUtil.requestLogin(new Callback<BaseResponse>() {
+                ApiUtil.requestLogin(new Callback<BaseResponse<UserBean>>() {
                     @Override
-                    public void onResponse(Call<BaseResponse> call, Response<BaseResponse> response) {
-                        Log.e(TAG, "onResponse: response=");
-                        response.raw().header("");
+                    public void onResponse(Call<BaseResponse<UserBean>> call, Response<BaseResponse<UserBean>> response) {
+                        userBean = response.body().getData();
+                        if (userBean != null){
+                            UserInfoManager.saveUserInfo(userBean);//保存用户信息
+                            UserInfoManager.saveIsLogin(true);//保存是否登录
+                            List<String> headerCookieList = response.raw().headers("Set-Cookie");
+                            UserInfoManager.saveUserInfoCookie(headerCookieList);//保存cookie
+                        }
                     }
-
                     @Override
-                    public void onFailure(Call<BaseResponse> call, Throwable t) {
+                    public void onFailure(Call<BaseResponse<UserBean>> call, Throwable t) {
 
                     }
                 },mEditTextUserName.getText().toString(),

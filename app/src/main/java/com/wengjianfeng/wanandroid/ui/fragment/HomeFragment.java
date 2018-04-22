@@ -12,16 +12,19 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Toast;
 
+import com.blankj.utilcode.util.ToastUtils;
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.wengjianfeng.wanandroid.R;
 import com.wengjianfeng.wanandroid.helper.ApiUtil;
+import com.wengjianfeng.wanandroid.manager.UserInfoManager;
 import com.wengjianfeng.wanandroid.model.pojo.ArticleBean;
 import com.wengjianfeng.wanandroid.model.pojo.BannerBean;
 import com.wengjianfeng.wanandroid.model.BaseResponse;
 import com.wengjianfeng.wanandroid.model.pojovo.ArticleListBean;
+import com.wengjianfeng.wanandroid.ui.activity.LoginActivity;
 import com.wengjianfeng.wanandroid.ui.activity.WebActivity;
 import com.wengjianfeng.wanandroid.ui.adapter.ArticleAdapter;
-import com.wengjianfeng.wanandroid.utils.GlideImageLoader;
+import com.wengjianfeng.wanandroid.manager.GlideImageLoaderManager;
 import com.youth.banner.Banner;
 import com.youth.banner.BannerConfig;
 import com.youth.banner.listener.OnBannerListener;
@@ -105,7 +108,16 @@ public class HomeFragment extends Fragment {
         mArticleAdapter.setOnItemChildClickListener(new BaseQuickAdapter.OnItemChildClickListener() {
             @Override
             public void onItemChildClick(BaseQuickAdapter adapter, View view, int position) {
-                Toast.makeText(getActivity(), "点我收藏", Toast.LENGTH_SHORT).show();
+                if (!UserInfoManager.isLogin()){
+                    ToastUtils.showShort("请先登录");
+                    startActivity(new Intent(getActivity(), LoginActivity.class));
+                    return;
+                }
+                if (mArticleAdapter.getData().get(position).isCollect()){
+                    ToastUtils.showShort("取消收藏");
+                } else {
+                    ToastUtils.showShort("收藏");
+                }
             }
         });
 
@@ -140,7 +152,7 @@ public class HomeFragment extends Fragment {
                 }
                 mBanner.setImages(imagePathList)
                         .setBannerTitles(titleList)
-                        .setImageLoader(new GlideImageLoader())
+                        .setImageLoader(new GlideImageLoaderManager())
                         .start();
                 mBanner.setOnBannerListener(new OnBannerListener() {
                     @Override

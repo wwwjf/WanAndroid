@@ -3,6 +3,7 @@ package com.wengjianfeng.wanandroid.helper;
 import com.wengjianfeng.wanandroid.model.pojo.BannerBean;
 import com.wengjianfeng.wanandroid.model.BaseResponse;
 import com.wengjianfeng.wanandroid.model.pojo.HotWordBean;
+import com.wengjianfeng.wanandroid.model.pojo.UserBean;
 import com.wengjianfeng.wanandroid.model.pojovo.ArticleListBean;
 import com.wengjianfeng.wanandroid.model.pojovo.ChapterBean;
 
@@ -77,8 +78,8 @@ public class ApiUtil {
         call.enqueue(callback);
     }
 
-    public static void requestLogin(Callback<BaseResponse> callback,String userName,String password){
-        Call<BaseResponse> call = wanApiService.requestLogin(userName,password);
+    public static void requestLogin(Callback<BaseResponse<UserBean>> callback,String userName,String password){
+        Call<BaseResponse<UserBean>> call = wanApiService.requestLogin(userName,password);
         call.enqueue(callback);
 
     }

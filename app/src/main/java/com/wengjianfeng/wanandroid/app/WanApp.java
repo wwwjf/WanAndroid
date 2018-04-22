@@ -2,6 +2,8 @@ package com.wengjianfeng.wanandroid.app;
 
 import android.app.Application;
 
+import com.blankj.utilcode.util.Utils;
+import com.facebook.stetho.Stetho;
 import com.orhanobut.logger.AndroidLogAdapter;
 import com.orhanobut.logger.Logger;
 import com.squareup.leakcanary.LeakCanary;
@@ -20,5 +22,15 @@ public class WanApp extends Application {
             return;
         }
         LeakCanary.install(this);
+
+        Utils.init(this);
+
+        Stetho.initialize(
+                Stetho.newInitializerBuilder(this)
+                        .enableDumpapp(
+                                Stetho.defaultDumperPluginsProvider(this))
+                        .enableWebKitInspector(
+                                Stetho.defaultInspectorModulesProvider(this))
+                        .build());
     }
 }
