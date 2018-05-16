@@ -1,5 +1,6 @@
 package com.wengjianfeng.wanandroid.ui.fragment;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -11,11 +12,13 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.wengjianfeng.wanandroid.R;
 import com.wengjianfeng.wanandroid.base.FragmentKeyDown;
 import com.wengjianfeng.wanandroid.helper.ApiUtil;
 import com.wengjianfeng.wanandroid.model.BaseResponse;
 import com.wengjianfeng.wanandroid.model.pojovo.ChapterBean;
+import com.wengjianfeng.wanandroid.ui.activity.ChapterDetailActivity;
 import com.wengjianfeng.wanandroid.ui.adapter.ChapterAdapter;
 
 import java.util.ArrayList;
@@ -78,6 +81,15 @@ public class ChapterFragment extends Fragment implements FragmentKeyDown{
         mChapterList = new ArrayList<>();
         mChapterAdapter = new ChapterAdapter(getActivity(),mChapterList);
         mRecyclerViewChapter.setAdapter(mChapterAdapter);
+        mChapterAdapter.setOnItemClickListener(new BaseQuickAdapter.OnItemClickListener() {
+            @Override
+            public void onItemClick(BaseQuickAdapter adapter, View view, int position) {
+                ChapterBean chapterBean = mChapterAdapter.getData().get(position);
+                Intent intent = new Intent(getActivity(), ChapterDetailActivity.class);
+                intent.putExtra("chapter",chapterBean);
+                startActivity(intent);
+            }
+        });
         return view;
     }
 

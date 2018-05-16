@@ -20,12 +20,13 @@ import com.bumptech.glide.request.RequestOptions;
 import com.bumptech.glide.request.target.Target;
 import com.wengjianfeng.wanandroid.R;
 import com.wengjianfeng.wanandroid.app.WanConstants;
+import com.wengjianfeng.wanandroid.base.BaseActivity;
 
 import butterknife.BindAnim;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
-public class SplashActivity extends AppCompatActivity {
+public class SplashActivity extends BaseActivity {
 
     @BindView(R.id.iv_splash)
     ImageView mImageViewSplash;
@@ -39,7 +40,6 @@ public class SplashActivity extends AppCompatActivity {
 //        getWindow().addFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN);
 //        requestWindowFeature(Window.FEATURE_NO_TITLE);
         setContentView(R.layout.activity_splash);
-        ButterKnife.bind(this);
         animation=new AnimationUtils().loadAnimation(this,R.anim.anim_zoom_in);
         animation.setFillAfter(true);//动画执行完毕后停留在最后一帧
         Glide.with(this)

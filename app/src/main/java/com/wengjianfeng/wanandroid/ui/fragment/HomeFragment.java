@@ -54,10 +54,6 @@ public class HomeFragment extends Fragment {
     @BindView(R.id.recyclerView_article)
     RecyclerView mRecyclerViewArticle;
 
-
-//    @BindView(R.id.banner_home)
-//    Banner mBanner;
-
     public HomeFragment() {
     }
 
@@ -97,7 +93,6 @@ public class HomeFragment extends Fragment {
 
                 String url = article.getLink();
                 String title = article.getTitle();
-                Log.i(TAG, "onItemClick: url="+url);
                 Intent intent = new Intent(getActivity(), WebActivity.class);
                 intent.putExtra("url",url);
                 intent.putExtra("title",title);
@@ -159,7 +154,6 @@ public class HomeFragment extends Fragment {
                     public void OnBannerClick(int position) {
                         String url = bannerBeanList.get(position).getUrl();
                         String title = bannerBeanList.get(position).getTitle();
-                        Log.i(TAG, "OnBannerClick: url="+url);
                         Intent intent = new Intent(getActivity(), WebActivity.class);
                         intent.putExtra("url",url);
                         intent.putExtra("title",title);

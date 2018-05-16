@@ -11,14 +11,19 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.Toast;
 
+import com.blankj.utilcode.util.AppUtils;
 import com.blankj.utilcode.util.SPUtils;
 import com.jude.swipbackhelper.SwipeBackHelper;
 import com.wengjianfeng.wanandroid.R;
 import com.wengjianfeng.wanandroid.app.WanConstants;
+import com.wengjianfeng.wanandroid.base.BaseActivity;
 import com.wengjianfeng.wanandroid.helper.ApiUtil;
 import com.wengjianfeng.wanandroid.manager.UserInfoManager;
 import com.wengjianfeng.wanandroid.model.BaseResponse;
 import com.wengjianfeng.wanandroid.model.pojo.UserBean;
+import com.wengjianfeng.wanandroid.ui.event.UserEvent;
+
+import org.greenrobot.eventbus.EventBus;
 
 import java.util.List;
 
@@ -30,7 +35,7 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-public class LoginActivity extends AppCompatActivity {
+public class LoginActivity extends BaseActivity {
     public static final String TAG = LoginActivity.class.getSimpleName();
 
     @BindView(R.id.iv_login_close)
@@ -54,22 +59,7 @@ public class LoginActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
-        ButterKnife.bind(this);
-        SwipeBackHelper.onCreate(this);
 
-    }
-
-    @Override
-    protected void onPostCreate(@Nullable Bundle savedInstanceState) {
-        super.onPostCreate(savedInstanceState);
-        SwipeBackHelper.onPostCreate(this);
-    }
-
-
-    @Override
-    protected void onDestroy() {
-        super.onDestroy();
-        SwipeBackHelper.onDestroy(this);
     }
 
     @OnClick({R.id.iv_login_close, R.id.btn_login, R.id.btn_register})
@@ -89,6 +79,8 @@ public class LoginActivity extends AppCompatActivity {
                             UserInfoManager.saveIsLogin(true);//保存是否登录
                             List<String> headerCookieList = response.raw().headers("Set-Cookie");
                             UserInfoManager.saveUserInfoCookie(headerCookieList);//保存cookie
+                            EventBus.getDefault().post(new UserEvent());
+                            finish();
                         }
                     }
                     @Override

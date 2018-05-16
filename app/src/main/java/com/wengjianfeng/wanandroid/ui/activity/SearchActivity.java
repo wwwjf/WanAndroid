@@ -14,6 +14,7 @@ import android.widget.TextView;
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.jude.swipbackhelper.SwipeBackHelper;
 import com.wengjianfeng.wanandroid.R;
+import com.wengjianfeng.wanandroid.base.BaseActivity;
 import com.wengjianfeng.wanandroid.helper.ApiUtil;
 import com.wengjianfeng.wanandroid.model.BaseResponse;
 import com.wengjianfeng.wanandroid.model.pojo.HotWordBean;
@@ -31,7 +32,7 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-public class SearchActivity extends AppCompatActivity implements BaseQuickAdapter.RequestLoadMoreListener {
+public class SearchActivity extends BaseActivity implements BaseQuickAdapter.RequestLoadMoreListener {
 
     public static final String TAG = SearchActivity.class.getSimpleName();
 
@@ -54,11 +55,8 @@ public class SearchActivity extends AppCompatActivity implements BaseQuickAdapte
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_search);
-        ButterKnife.bind(this);
-        SwipeBackHelper.onCreate(this);
 
         setSupportActionBar(mToolbarSearch);
-        mToolbarSearch.setNavigationIcon(R.drawable.ic_back);
         mToolbarSearch.setNavigationOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -145,17 +143,6 @@ public class SearchActivity extends AppCompatActivity implements BaseQuickAdapte
     }
 
 
-    @Override
-    protected void onPostCreate(@Nullable Bundle savedInstanceState) {
-        super.onPostCreate(savedInstanceState);
-        SwipeBackHelper.onPostCreate(this);
-    }
-
-    @Override
-    protected void onDestroy() {
-        super.onDestroy();
-        SwipeBackHelper.onDestroy(this);
-    }
 
     @Override
     public void onLoadMoreRequested() {

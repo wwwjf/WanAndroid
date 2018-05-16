@@ -20,13 +20,19 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.blankj.utilcode.util.ToastUtils;
 import com.wengjianfeng.wanandroid.R;
 import com.wengjianfeng.wanandroid.manager.UserInfoManager;
 import com.wengjianfeng.wanandroid.model.pojo.UserBean;
 import com.wengjianfeng.wanandroid.ui.adapter.MainFragmentPagerAdapter;
+import com.wengjianfeng.wanandroid.ui.event.UserEvent;
 import com.wengjianfeng.wanandroid.ui.fragment.ChapterFragment;
 import com.wengjianfeng.wanandroid.ui.fragment.HomeFragment;
 import com.wengjianfeng.wanandroid.ui.fragment.UserFragment;
+
+import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
+import org.greenrobot.eventbus.ThreadMode;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -54,6 +60,14 @@ public class HomeActivity extends AppCompatActivity
     TabLayout mTabLayout;
 
     private MainFragmentPagerAdapter mPagerAdapter;
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+        if (!EventBus.getDefault().isRegistered(this)) {
+            EventBus.getDefault().register(this);
+        }
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -96,6 +110,11 @@ public class HomeActivity extends AppCompatActivity
 
 
         mNavigationView.setNavigationItemSelectedListener(this);
+        initHeaderView();
+
+    }
+
+    private void initHeaderView() {
         View headerView = mNavigationView.getHeaderView(0);
         ImageView ivLogin = headerView.findViewById(R.id.iv_nav_header_icon);
         TextView tvUserName = headerView.findViewById(R.id.tv_nav_header_userName);
@@ -122,9 +141,9 @@ public class HomeActivity extends AppCompatActivity
             @Override
             public void onClick(View v) {
                 UserInfoManager.exitUser();
+                EventBus.getDefault().post(new UserEvent());
             }
         });
-
     }
 
     private void showLogin() {
@@ -141,36 +160,26 @@ public class HomeActivity extends AppCompatActivity
 
         mPagerAdapter = new MainFragmentPagerAdapter(getSupportFragmentManager(), fragmentList);
         mViewPager.setAdapter(mPagerAdapter);
-        /*mTabLayout.setupWithViewPager(mViewPager);
-        mTabLayout.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
-            @Override
-            public void onTabSelected(TabLayout.Tab tab) {
-                mToolbar.setTitle(tab.getText());
-            }
-
-            @Override
-            public void onTabUnselected(TabLayout.Tab tab) {
-
-            }
-
-            @Override
-            public void onTabReselected(TabLayout.Tab tab) {
-                mToolbar.setTitle(tab.getText());
-            }
-        });*/
         mTabLayout.addOnTabSelectedListener(new TabLayout.ViewPagerOnTabSelectedListener(mViewPager));
         mViewPager.addOnPageChangeListener(new TabLayout.TabLayoutOnPageChangeListener(mTabLayout));
+        mViewPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
+            @Override
+            public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
+
+            }
+
+            @Override
+            public void onPageSelected(int position) {
+                mToolbar.setTitle(mViewPager.getAdapter().getPageTitle(position));
+            }
+
+            @Override
+            public void onPageScrollStateChanged(int state) {
+
+            }
+        });
     }
 
-    /*@Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        switch (item.getItemId()) {
-            case android.R.id.home:
-                mDrawerLayout.openDrawer(Gravity.START);
-                return true;
-        }
-        return super.onOptionsItemSelected(item);
-    }*/
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -209,16 +218,31 @@ public class HomeActivity extends AppCompatActivity
     public boolean onNavigationItemSelected(@NonNull MenuItem item) {
         int itemId = item.getItemId();
         switch (itemId){
-            case R.id.nav_collect:
+            case R.id.nav_collect://收藏
                 //检测是否登录
+                ToastUtils.showShort("请先登录");
+                showLogin();
                 break;
-            case R.id.nav_setting:
+            case R.id.nav_setting://设置
+                startActivity(new Intent(this,SettingActivity.class));
                 break;
-            case R.id.nav_about:
+            case R.id.nav_about://关于
+                startActivity(new Intent(this,AboutActivity.class));
                 break;
         }
 
         mDrawerLayout.closeDrawer(GravityCompat.START);
         return true;
+    }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onUserEvent(UserEvent event){
+        initHeaderView();
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        EventBus.getDefault().unregister(this);
     }
 }

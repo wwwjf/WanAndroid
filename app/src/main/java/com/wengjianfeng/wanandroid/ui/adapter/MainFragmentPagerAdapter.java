@@ -38,6 +38,6 @@ public class MainFragmentPagerAdapter extends FragmentPagerAdapter {
     @Override
     public CharSequence getPageTitle(int position) {
         Bundle arguments = mFragmentList.get(position).getArguments();
-        return arguments.getString("param1");
+        return arguments.getString("param1");//标题
     }
 }

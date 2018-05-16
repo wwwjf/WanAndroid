@@ -32,7 +32,7 @@ import com.just.agentweb.PermissionInterceptor;
  * source code  https://github.com/Justson/AgentWeb
  */
 
-public abstract class BaseAgentWebActivity extends AppCompatActivity {
+public abstract class BaseAgentWebActivity extends BaseActivity {
 
     protected AgentWeb mAgentWeb;
     private AgentWebUIControllerImplBase mAgentWebUIController;

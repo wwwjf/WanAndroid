@@ -32,9 +32,6 @@ public class WebActivity extends BaseAgentWebActivity {
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_web);
-        SwipeBackHelper.onCreate(this);
-        ButterKnife.bind(this);
-
 
         mToolbar.setTitle(getIntent().getStringExtra("title"));
         setSupportActionBar(mToolbar);
@@ -50,17 +47,6 @@ public class WebActivity extends BaseAgentWebActivity {
         });
     }
 
-    @Override
-    protected void onPostCreate(@Nullable Bundle savedInstanceState) {
-        super.onPostCreate(savedInstanceState);
-        SwipeBackHelper.onPostCreate(this);
-    }
-
-    @Override
-    protected void onDestroy() {
-        super.onDestroy();
-        SwipeBackHelper.onDestroy(this);
-    }
 
     @Override
     public boolean onKeyDown(int keyCode, KeyEvent event) {
