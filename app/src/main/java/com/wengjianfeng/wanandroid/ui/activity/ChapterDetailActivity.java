@@ -4,12 +4,12 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
+import android.support.v4.content.ContextCompat;
 import android.support.v4.view.ViewPager;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
+import android.widget.LinearLayout;
 
-import com.blankj.utilcode.util.LogUtils;
-import com.blankj.utilcode.util.ToastUtils;
+import com.blankj.utilcode.util.SizeUtils;
 import com.wengjianfeng.wanandroid.R;
 import com.wengjianfeng.wanandroid.base.BaseActivity;
 import com.wengjianfeng.wanandroid.model.pojo.ChapterChildrenBean;
@@ -29,7 +29,7 @@ public class ChapterDetailActivity extends BaseActivity {
     Toolbar mToolBarChapterDetail;
 
     @BindView(R.id.tabLayout_chapterDetail)
-    TabLayout mTablayoutChapterDetail;
+    TabLayout mTabLayoutChapterDetail;
 
     @BindView(R.id.viewPager_chapterDetail)
     ViewPager mViewPagerChapterDetail;
@@ -44,18 +44,24 @@ public class ChapterDetailActivity extends BaseActivity {
         List<ChapterChildrenBean> chapterChildren = chapterBean.getChildren();
         List<Fragment> mChapterDetailFragment = new ArrayList<>();
 
+//        TabLayout item分隔线 
+        LinearLayout linearLayout = (LinearLayout) mTabLayoutChapterDetail.getChildAt(0);
+        linearLayout.setShowDividers(LinearLayout.SHOW_DIVIDER_MIDDLE);
+        linearLayout.setDividerDrawable(ContextCompat.getDrawable(this, R.drawable.divider));
+        linearLayout.setDividerPadding(SizeUtils.dp2px(10));
+
         for (ChapterChildrenBean chapterChild : chapterChildren) {
-            TabLayout.Tab tab = mTablayoutChapterDetail.newTab()
+            TabLayout.Tab tab = mTabLayoutChapterDetail.newTab()
                     .setText(chapterChild.getName())
                     .setTag(chapterChild.getId());
-            mTablayoutChapterDetail.addTab(tab);
+            mTabLayoutChapterDetail.addTab(tab);
             ChapterDetailFragment detailFragment = ChapterDetailFragment.newInstance(chapterChild.getName(),
                     chapterChild.getId()+"");
             mChapterDetailFragment.add(detailFragment);
         }
         ChapterDetailPagerAdapter detailPagerAdapter = new ChapterDetailPagerAdapter(getSupportFragmentManager(),mChapterDetailFragment);
         mViewPagerChapterDetail.setAdapter(detailPagerAdapter);
-        mTablayoutChapterDetail.addOnTabSelectedListener(new TabLayout.ViewPagerOnTabSelectedListener(mViewPagerChapterDetail));
-        mViewPagerChapterDetail.addOnPageChangeListener(new TabLayout.TabLayoutOnPageChangeListener(mTablayoutChapterDetail));
+        mTabLayoutChapterDetail.addOnTabSelectedListener(new TabLayout.ViewPagerOnTabSelectedListener(mViewPagerChapterDetail));
+        mViewPagerChapterDetail.addOnPageChangeListener(new TabLayout.TabLayoutOnPageChangeListener(mTabLayoutChapterDetail));
     }
 }

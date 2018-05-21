@@ -12,7 +12,9 @@ import android.widget.ImageView;
 import android.widget.Toast;
 
 import com.blankj.utilcode.util.AppUtils;
+import com.blankj.utilcode.util.LogUtils;
 import com.blankj.utilcode.util.SPUtils;
+import com.blankj.utilcode.util.ToastUtils;
 import com.jude.swipbackhelper.SwipeBackHelper;
 import com.wengjianfeng.wanandroid.R;
 import com.wengjianfeng.wanandroid.app.WanConstants;
@@ -24,6 +26,7 @@ import com.wengjianfeng.wanandroid.model.pojo.UserBean;
 import com.wengjianfeng.wanandroid.ui.event.UserEvent;
 
 import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Logger;
 
 import java.util.List;
 
@@ -69,23 +72,29 @@ public class LoginActivity extends BaseActivity {
                 finish();
                 break;
             case R.id.btn_login:
-                Toast.makeText(this, "登录", Toast.LENGTH_SHORT).show();
                 ApiUtil.requestLogin(new Callback<BaseResponse<UserBean>>() {
                     @Override
                     public void onResponse(Call<BaseResponse<UserBean>> call, Response<BaseResponse<UserBean>> response) {
+                        com.orhanobut.logger.Logger.json(response.body().toString());
                         userBean = response.body().getData();
-                        if (userBean != null){
-                            UserInfoManager.saveUserInfo(userBean);//保存用户信息
-                            UserInfoManager.saveIsLogin(true);//保存是否登录
-                            List<String> headerCookieList = response.raw().headers("Set-Cookie");
-                            UserInfoManager.saveUserInfoCookie(headerCookieList);//保存cookie
-                            EventBus.getDefault().post(new UserEvent());
-                            finish();
+                        if (userBean == null){
+                            Log.e(TAG, "onResponse: userBean为空");
+                            String errorMsg = response.body().getErrorMsg();
+                            ToastUtils.showShort(errorMsg);
+                            return;
                         }
+                        UserInfoManager.saveUserInfo(userBean);//保存用户信息
+                        UserInfoManager.saveIsLogin(true);//保存是否登录
+                        List<String> headerCookieList = response.raw().headers("Set-Cookie");
+                        UserInfoManager.saveUserInfoCookie(headerCookieList);//保存cookie
+                        EventBus.getDefault().post(new UserEvent());
+                        finish();
+
                     }
                     @Override
                     public void onFailure(Call<BaseResponse<UserBean>> call, Throwable t) {
-
+                        Log.e(TAG, "onFailure: 登录失败");
+                        ToastUtils.showShort("连接服务器失败");
                     }
                 },mEditTextUserName.getText().toString(),
                   mEditTextPassword.getText().toString());

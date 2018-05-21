@@ -3,6 +3,7 @@ package com.wengjianfeng.wanandroid.ui.fragment;
 import android.content.Context;
 import android.net.Uri;
 import android.os.Bundle;
+import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -23,7 +24,12 @@ public class ChapterDetailFragment extends Fragment {
     private String mParam1;
     private String mParam2;
 
+    private View rootView;
     private Unbinder bind;
+    //当前Fragment是否处于可见状态标志，防止因ViewPager的缓存机制而导致回调函数的触发
+    private boolean isFragmentVisible;
+    //是否是第一次开启网络加载
+    public boolean isFirst;
 
     public ChapterDetailFragment() {
     }
@@ -50,14 +56,51 @@ public class ChapterDetailFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_chapter_detail, container, false);
-        bind = ButterKnife.bind(this,view);
-        return view;
+        if (rootView == null)
+            rootView = inflater.inflate(R.layout.fragment_chapter_detail, container, false);
+        bind = ButterKnife.bind(this,rootView);
+
+        //可见，但是并没有加载过
+        if (isFragmentVisible && !isFirst) {
+            onFragmentVisibleChange(true);
+        }
+        return rootView;
+    }
+
+    @Override
+    public void onActivityCreated(@Nullable Bundle savedInstanceState) {
+        super.onActivityCreated(savedInstanceState);
+
+    }
+
+    @Override
+    public void setUserVisibleHint(boolean isVisibleToUser) {
+        super.setUserVisibleHint(isVisibleToUser);
+        if (isVisibleToUser) {
+            isFragmentVisible = true;
+        }
+        if (rootView == null) {
+            return;
+        }
+        //可见，并且没有加载过
+        if (!isFirst&&isFragmentVisible) {
+            onFragmentVisibleChange(true);
+            return;
+        }
+        //由可见——>不可见 已经加载过
+        if (isFragmentVisible) {
+            onFragmentVisibleChange(false);
+            isFragmentVisible = false;
+        }
     }
 
     @Override
     public void onDestroy() {
         super.onDestroy();
         bind.unbind();
+    }
+
+    protected void onFragmentVisibleChange(boolean isVisible) {
+
     }
 }
