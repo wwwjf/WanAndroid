@@ -3,21 +3,44 @@ package com.wengjianfeng.wanandroid.ui.fragment;
 import android.content.Context;
 import android.net.Uri;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.wengjianfeng.wanandroid.R;
+import com.wengjianfeng.wanandroid.helper.ApiUtil;
+import com.wengjianfeng.wanandroid.model.BaseResponse;
+import com.wengjianfeng.wanandroid.model.pojo.ArticleBean;
+import com.wengjianfeng.wanandroid.model.pojovo.ArticleListBean;
+import com.wengjianfeng.wanandroid.ui.adapter.ArticleAdapter;
 
+import java.io.IOException;
+import java.util.ArrayList;
+
+import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.Unbinder;
+import in.srain.cube.views.ptr.PtrClassicFrameLayout;
+import in.srain.cube.views.ptr.PtrDefaultHandler;
+import in.srain.cube.views.ptr.PtrFrameLayout;
+import in.srain.cube.views.ptr.PtrHandler;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 /**
- *
+ * 知识体系下分类文章
  */
-public class ChapterDetailFragment extends Fragment {
+public class ChapterDetailFragment extends Fragment
+        implements BaseQuickAdapter.RequestLoadMoreListener{
+    private static final String TAG = ChapterDetailFragment.class.getSimpleName();
     private static final String ARG_PARAM1 = "param1";
     private static final String ARG_PARAM2 = "param2";
 
@@ -30,6 +53,15 @@ public class ChapterDetailFragment extends Fragment {
     private boolean isFragmentVisible;
     //是否是第一次开启网络加载
     public boolean isFirst;
+
+    private ArrayList<ArticleBean> mArticleList;
+    private ArticleAdapter mArticleAdapter;
+
+    @BindView(R.id.ptrClassicFrameLayout_chapterArticle)
+    PtrClassicFrameLayout mPtrChapterArticle;
+
+    @BindView(R.id.recyclerView_chapterArticle)
+    RecyclerView mRecyclerViewChapterArticle;
 
     public ChapterDetailFragment() {
     }
@@ -64,12 +96,57 @@ public class ChapterDetailFragment extends Fragment {
         if (isFragmentVisible && !isFirst) {
             onFragmentVisibleChange(true);
         }
+
+        mArticleList = new ArrayList<>();
+        LinearLayoutManager layoutManager = new LinearLayoutManager(getActivity());
+        mRecyclerViewChapterArticle.setLayoutManager(layoutManager);
+        mArticleAdapter = new ArticleAdapter(getActivity(), mArticleList);
+        mArticleAdapter.setEnableLoadMore(true);
+        mArticleAdapter.setOnLoadMoreListener(this,mRecyclerViewChapterArticle);
+        mRecyclerViewChapterArticle.setAdapter(mArticleAdapter);
+        mArticleAdapter.setHeaderFooterEmpty(true,true);
+
         return rootView;
     }
 
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
+        mArticleAdapter.setNewData(mArticleList);
+        mArticleAdapter.setEmptyView(R.layout.view_load_empty);
+        mPtrChapterArticle.setLastUpdateTimeRelateObject(this);
+        mPtrChapterArticle.setPtrHandler(new PtrHandler() {
+            @Override
+            public void onRefreshBegin(final PtrFrameLayout frame) {
+                initData();
+            }
+
+            @Override
+            public boolean checkCanDoRefresh(PtrFrameLayout frame, View content, View header) {
+                return PtrDefaultHandler.checkContentCanBePulledDown(frame, content, header);
+            }
+        });
+        initData();
+
+    }
+
+    private void initData() {
+
+        ApiUtil.getChapterArticleListData(new Callback<BaseResponse<ArticleListBean>>() {
+            @Override
+            public void onResponse(Call<BaseResponse<ArticleListBean>> call,
+                                   Response<BaseResponse<ArticleListBean>> response) {
+                mPtrChapterArticle.refreshComplete();
+                mArticleList.clear();
+                mArticleList.addAll(response.body().getData().getDatas());
+                mArticleAdapter.notifyDataSetChanged();
+            }
+
+            @Override
+            public void onFailure(Call<BaseResponse<ArticleListBean>> call, Throwable t) {
+                mPtrChapterArticle.refreshComplete();
+            }
+        },mParam2);
 
     }
 
@@ -101,6 +178,19 @@ public class ChapterDetailFragment extends Fragment {
     }
 
     protected void onFragmentVisibleChange(boolean isVisible) {
+
+    }
+
+    @Override
+    public void onLoadMoreRequested() {
+
+        new Handler().postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                mArticleAdapter.loadMoreEnd(true);
+                mArticleAdapter.loadMoreComplete();
+            }
+        },2000);
 
     }
 }

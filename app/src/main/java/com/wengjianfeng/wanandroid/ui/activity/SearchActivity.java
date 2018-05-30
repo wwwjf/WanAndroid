@@ -60,7 +60,7 @@ public class SearchActivity extends BaseActivity implements BaseQuickAdapter.Req
         mToolbarSearch.setNavigationOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                SearchActivity.this.finish();
+                onBackPressed();
             }
         });
 
@@ -142,7 +142,15 @@ public class SearchActivity extends BaseActivity implements BaseQuickAdapter.Req
 
     }
 
-
+    @Override
+    public void onBackPressed() {
+        if (mLinearLayoutHotWord.getVisibility() == View.VISIBLE){
+            super.onBackPressed();
+//            finish();
+        } else {
+            mLinearLayoutHotWord.setVisibility(View.VISIBLE);
+        }
+    }
 
     @Override
     public void onLoadMoreRequested() {

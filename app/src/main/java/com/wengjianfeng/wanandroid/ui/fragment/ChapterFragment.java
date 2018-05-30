@@ -27,6 +27,10 @@ import java.util.List;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.Unbinder;
+import in.srain.cube.views.ptr.PtrClassicFrameLayout;
+import in.srain.cube.views.ptr.PtrDefaultHandler;
+import in.srain.cube.views.ptr.PtrFrameLayout;
+import in.srain.cube.views.ptr.PtrHandler;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -42,6 +46,9 @@ public class ChapterFragment extends Fragment implements FragmentKeyDown{
 
     @BindView(R.id.recyclerView_chapter)
     RecyclerView mRecyclerViewChapter;
+
+    @BindView(R.id.ptrClassicFrameLayout_chapter)
+    PtrClassicFrameLayout mPtrClassicFrameLayoutChapter;
 
     private List<ChapterBean> mChapterList;
     private ChapterAdapter mChapterAdapter;
@@ -97,17 +104,37 @@ public class ChapterFragment extends Fragment implements FragmentKeyDown{
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
+
+        mPtrClassicFrameLayoutChapter.setLastUpdateTimeRelateObject(this);
+        mPtrClassicFrameLayoutChapter.setPtrHandler(new PtrHandler() {
+            @Override
+            public void onRefreshBegin(final PtrFrameLayout frame) {
+                initData();
+            }
+
+            @Override
+            public boolean checkCanDoRefresh(PtrFrameLayout frame, View content, View header) {
+                return PtrDefaultHandler.checkContentCanBePulledDown(frame, content, header);
+            }
+        });
+        mChapterAdapter.bindToRecyclerView(mRecyclerViewChapter);
+        mChapterAdapter.setEmptyView(R.layout.view_load_empty);
+        initData();
+    }
+
+    private void initData() {
         ApiUtil.getChapterListData(new Callback<BaseResponse<List<ChapterBean>>>() {
             @Override
             public void onResponse(Call<BaseResponse<List<ChapterBean>>> call,
                                    Response<BaseResponse<List<ChapterBean>>> response) {
+                mPtrClassicFrameLayoutChapter.refreshComplete();
                 mChapterList.addAll(response.body().getData());
                 mChapterAdapter.notifyDataSetChanged();
             }
 
             @Override
             public void onFailure(Call<BaseResponse<List<ChapterBean>>> call, Throwable t) {
-
+                mPtrClassicFrameLayoutChapter.refreshComplete();
             }
         });
     }

@@ -4,9 +4,17 @@
     android:layout_height="match_parent"
     tools:context="com.wengjianfeng.wanandroid.ui.fragment.ChapterFragment">
 
-    <android.support.v7.widget.RecyclerView
-        android:id="@+id/recyclerView_chapter"
+    <in.srain.cube.views.ptr.PtrClassicFrameLayout
+        android:id="@+id/ptrClassicFrameLayout_chapter"
         android:layout_width="match_parent"
-        android:layout_height="match_parent" />
+        android:layout_height="match_parent">
+
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/recyclerView_chapter"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" />
+
+    </in.srain.cube.views.ptr.PtrClassicFrameLayout>
+
 
 </FrameLayout>

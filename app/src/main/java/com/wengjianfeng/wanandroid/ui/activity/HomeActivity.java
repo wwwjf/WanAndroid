@@ -25,6 +25,7 @@ import com.wengjianfeng.wanandroid.R;
 import com.wengjianfeng.wanandroid.manager.UserInfoManager;
 import com.wengjianfeng.wanandroid.model.pojo.UserBean;
 import com.wengjianfeng.wanandroid.ui.adapter.MainFragmentPagerAdapter;
+import com.wengjianfeng.wanandroid.ui.event.ScrollEvent;
 import com.wengjianfeng.wanandroid.ui.event.UserEvent;
 import com.wengjianfeng.wanandroid.ui.fragment.ChapterFragment;
 import com.wengjianfeng.wanandroid.ui.fragment.HomeFragment;
@@ -178,6 +179,23 @@ public class HomeActivity extends AppCompatActivity
 
             }
         });
+        mTabLayout.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
+            @Override
+            public void onTabSelected(TabLayout.Tab tab) {
+
+            }
+
+            @Override
+            public void onTabUnselected(TabLayout.Tab tab) {
+
+            }
+
+            @Override
+            public void onTabReselected(TabLayout.Tab tab) {
+                ToastUtils.showShort("reselected");
+                EventBus.getDefault().post(new ScrollEvent());
+            }
+        });
     }
 
 
@@ -217,20 +235,27 @@ public class HomeActivity extends AppCompatActivity
     @Override
     public boolean onNavigationItemSelected(@NonNull MenuItem item) {
         int itemId = item.getItemId();
+        Class destActivity = null;
         switch (itemId){
             case R.id.nav_collect://收藏
                 //检测是否登录
-                ToastUtils.showShort("请先登录");
-                showLogin();
+                if (!UserInfoManager.isLogin()) {
+                    ToastUtils.showShort("请先登录");
+                    showLogin();
+                    return true;
+                }
+                destActivity = CollectionActivity.class;
                 break;
             case R.id.nav_setting://设置
-                startActivity(new Intent(this,SettingActivity.class));
+                destActivity = SettingActivity.class;
                 break;
             case R.id.nav_about://关于
-                startActivity(new Intent(this,AboutActivity.class));
+                destActivity = AboutActivity.class;
                 break;
         }
-
+        if (destActivity != null) {
+            startActivity(new Intent(this, destActivity));
+        }
         mDrawerLayout.closeDrawer(GravityCompat.START);
         return true;
     }

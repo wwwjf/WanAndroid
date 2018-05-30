@@ -3,7 +3,9 @@
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
     android:layout_margin="8dp"
-    android:background="@drawable/selector_search_hotword"
+    android:text="test"
+    android:textColor="@color/selector_button_text"
+    android:background="@drawable/selector_search_hotword_bg"
     android:padding="8dp">
 
 </TextView>

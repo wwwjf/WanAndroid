@@ -37,7 +37,8 @@ public class ApiUtil {
      * @param callback
      * @param page     页数
      */
-    public static void getArticleListData(Callback<BaseResponse<ArticleListBean>> callback, int page) {
+    public static void getArticleListData(Callback<BaseResponse<ArticleListBean>> callback,
+                                          int page) {
 
         Call<BaseResponse<ArticleListBean>> call = wanApiService.articleList(page);
         call.enqueue(callback);
@@ -78,9 +79,54 @@ public class ApiUtil {
         call.enqueue(callback);
     }
 
+    /**
+     * 登录
+     * @param callback
+     * @param userName
+     * @param password
+     */
     public static void requestLogin(Callback<BaseResponse<UserBean>> callback,String userName,String password){
         Call<BaseResponse<UserBean>> call = wanApiService.requestLogin(userName,password);
         call.enqueue(callback);
 
+    }
+
+    /**
+     * 知识体系分类的文章
+     * @param callback
+     * @param cid
+     */
+    public static void getChapterArticleListData(Callback<BaseResponse<ArticleListBean>> callback,
+                                                 String cid){
+        Call<BaseResponse<ArticleListBean>> call = wanApiService.chapterArticleList(cid);
+        call.enqueue(callback);
+    }
+
+    /**
+     * 收藏的文章
+     * @param callback
+     * @param page
+     */
+    public static void getCollectionArticleListData(Callback<BaseResponse<ArticleListBean>> callback,
+                                                    int page){
+        Call<BaseResponse<ArticleListBean>> call = wanApiService.collectionArticleList(page);
+        call.enqueue(callback);
+    }
+
+    /**
+     * 收藏文章
+     * @param id 文章id
+     */
+    public static void collectArticleData(Callback<BaseResponse<ArticleListBean>> callback,
+                                          int id) {
+        Call<BaseResponse<ArticleListBean>> call = wanApiService.collectWanArticle(id);
+        call.enqueue(callback);
+
+    }
+
+    public static void unCollectArticleData(Callback<BaseResponse<ArticleListBean>> callback,
+                                            int id){
+        Call<BaseResponse<ArticleListBean>> call = wanApiService.unCollectWanArticle(id);
+        call.enqueue(callback);
     }
 }
