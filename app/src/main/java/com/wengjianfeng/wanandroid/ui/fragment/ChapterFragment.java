@@ -20,6 +20,11 @@ import com.wengjianfeng.wanandroid.model.BaseResponse;
 import com.wengjianfeng.wanandroid.model.pojovo.ChapterBean;
 import com.wengjianfeng.wanandroid.ui.activity.ChapterDetailActivity;
 import com.wengjianfeng.wanandroid.ui.adapter.ChapterAdapter;
+import com.wengjianfeng.wanandroid.ui.event.ScrollTreeEvent;
+
+import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
+import org.greenrobot.eventbus.ThreadMode;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -100,6 +105,13 @@ public class ChapterFragment extends Fragment implements FragmentKeyDown{
         return view;
     }
 
+    @Override
+    public void onResume() {
+        super.onResume();
+        if (!EventBus.getDefault().isRegistered(this)) {
+            EventBus.getDefault().register(this);
+        }
+    }
 
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
@@ -143,11 +155,18 @@ public class ChapterFragment extends Fragment implements FragmentKeyDown{
     public void onDestroy() {
         super.onDestroy();
         unbinder.unbind();
+        EventBus.getDefault().unregister(this);
     }
 
     @Override
     public boolean onFragmentKeyDown(int keyCode, KeyEvent event) {
         Log.i(TAG, "onFragmentKeyDown: keCode="+keyCode);
         return false;
+    }
+
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onScrollEvent(ScrollTreeEvent event){
+        mRecyclerViewChapter.smoothScrollToPosition(0);
     }
 }

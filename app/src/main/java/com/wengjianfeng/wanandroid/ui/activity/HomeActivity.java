@@ -25,7 +25,8 @@ import com.wengjianfeng.wanandroid.R;
 import com.wengjianfeng.wanandroid.manager.UserInfoManager;
 import com.wengjianfeng.wanandroid.model.pojo.UserBean;
 import com.wengjianfeng.wanandroid.ui.adapter.MainFragmentPagerAdapter;
-import com.wengjianfeng.wanandroid.ui.event.ScrollEvent;
+import com.wengjianfeng.wanandroid.ui.event.ScrollArticleEvent;
+import com.wengjianfeng.wanandroid.ui.event.ScrollTreeEvent;
 import com.wengjianfeng.wanandroid.ui.event.UserEvent;
 import com.wengjianfeng.wanandroid.ui.fragment.ChapterFragment;
 import com.wengjianfeng.wanandroid.ui.fragment.HomeFragment;
@@ -192,8 +193,11 @@ public class HomeActivity extends AppCompatActivity
 
             @Override
             public void onTabReselected(TabLayout.Tab tab) {
-                ToastUtils.showShort("reselected");
-                EventBus.getDefault().post(new ScrollEvent());
+                if (tab.getPosition() == 0) {
+                    EventBus.getDefault().post(new ScrollArticleEvent());
+                } else {
+                    EventBus.getDefault().post(new ScrollTreeEvent());
+                }
             }
         });
     }

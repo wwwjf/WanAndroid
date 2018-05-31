@@ -2,6 +2,25 @@ apply plugin: 'com.android.application'
 apply plugin: 'kotlin-android'
 
 android {
+
+    def fileArray = []
+    //遍历输出文件
+    android.applicationVariants.all { variant ->
+        variant.outputs.all { output ->
+            def outputFile = output.outputFile
+            if (outputFile != null && outputFile.name.endsWith('.apk')) {
+                def fileName = outputFile.name.replace("app-release",
+                        "玩Android_" + defaultConfig.versionCode +
+                                "_v" + defaultConfig.versionName +
+                                "_"+buildType.name)
+                outputFileName = fileName
+                //往数组添加输出的文件路径
+                fileArray.add(outputFile.parentFile.absolutePath + File.separator + fileName)
+            }
+        }
+    }
+
+
     compileSdkVersion 26
     defaultConfig {
         applicationId "com.wengjianfeng.wanandroid"
