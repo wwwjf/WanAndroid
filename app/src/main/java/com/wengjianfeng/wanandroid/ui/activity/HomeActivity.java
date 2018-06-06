@@ -254,11 +254,16 @@ public class HomeActivity extends AppCompatActivity
                 destActivity = SettingActivity.class;
                 break;
             case R.id.nav_about://关于
-                destActivity = AboutActivity.class;
+                destActivity = WebActivity.class;
                 break;
         }
         if (destActivity != null) {
-            startActivity(new Intent(this, destActivity));
+            Intent intent = new Intent(this, destActivity);
+            if (itemId == R.id.nav_about){
+                intent.putExtra("url", "http://www.wanandroid.com/about");
+                intent.putExtra("title", "关于");
+            }
+            startActivity(intent);
         }
         mDrawerLayout.closeDrawer(GravityCompat.START);
         return true;

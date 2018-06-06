@@ -38,5 +38,6 @@ public class WanConstants {
     }
     public static final String COOKIE = "cookie";
 
+    public static final int PERMISSION_REQUESTCODE = 1565;
 
 }

@@ -6,7 +6,7 @@ import android.os.Bundle;
 import com.wengjianfeng.wanandroid.R;
 import com.wengjianfeng.wanandroid.base.BaseActivity;
 
-public class AboutActivity extends BaseActivity {
+public class AboutActivity extends WebActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
