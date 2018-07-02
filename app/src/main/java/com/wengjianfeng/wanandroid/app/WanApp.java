@@ -39,7 +39,7 @@ public class WanApp extends Application {
         UMConfigure.setLogEnabled(true);
         UMConfigure.setEncryptEnabled(true);
 
-        PlatformConfig.setWeixin("", "");
+        PlatformConfig.setWeixin("wxc4b9b46e516fd70a", "339f563f983a720a67a4d69b5f2e935c");
         PlatformConfig.setSinaWeibo("2141819849", "a8d4a7513241912582542a43713f0685","http://sns.whalecloud.com");
         PlatformConfig.setQQZone("1106954784", "FLbg8kC7TKxo8HbX");
         PlatformConfig.setAlipay("2015111700822536");

@@ -1,24 +1,27 @@
 package com.wengjianfeng.wanandroid.ui.activity;
 
+import android.content.Intent;
 import android.os.Bundle;
-import android.support.annotation.Nullable;
-import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.LinearLayout;
+import android.widget.ScrollView;
 import android.widget.TextView;
 
 import com.chad.library.adapter.base.BaseQuickAdapter;
-import com.jude.swipbackhelper.SwipeBackHelper;
 import com.wengjianfeng.wanandroid.R;
 import com.wengjianfeng.wanandroid.base.BaseActivity;
 import com.wengjianfeng.wanandroid.helper.ApiUtil;
 import com.wengjianfeng.wanandroid.model.BaseResponse;
+import com.wengjianfeng.wanandroid.model.pojo.ArticleBean;
 import com.wengjianfeng.wanandroid.model.pojo.HotWordBean;
 import com.wengjianfeng.wanandroid.model.pojovo.ArticleListBean;
+import com.wengjianfeng.wanandroid.ui.adapter.ArticleAdapter;
 import com.zhy.view.flowlayout.FlowLayout;
 import com.zhy.view.flowlayout.TagAdapter;
 import com.zhy.view.flowlayout.TagFlowLayout;
@@ -27,7 +30,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.BindView;
-import butterknife.ButterKnife;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -42,14 +44,26 @@ public class SearchActivity extends BaseActivity implements BaseQuickAdapter.Req
     @BindView(R.id.flowLayout_search_hotKeyWord)
     TagFlowLayout mFlowLayoutHotKeyWord;
 
-    @BindView(R.id.linearLayout_search_hotKeyWord)
-    LinearLayout mLinearLayoutHotWord;
+    @BindView(R.id.flowLayout_search_friendWeb)
+    TagFlowLayout mFlowLayoutFriendWeb;
+
+    @BindView(R.id.scrollView_search_hotKeyWord)
+    ScrollView mScrollViewHotWord;
 
     @BindView(R.id.clearEditText_search_keyWord)
     EditText mClearEditTextKeyWord;
 
+    @BindView(R.id.recyclerView_search_article)
+    RecyclerView mRecyclerViewArticle;
+
     private List<HotWordBean> mHotWordList;
-    private TagAdapter<HotWordBean> mTagAdapter;
+    private TagAdapter<HotWordBean> mTagHotWordAdapter;
+
+    private List<HotWordBean> mFriendWebList;
+    private TagAdapter<HotWordBean> mTagFriendWebAdapter;
+
+    private List<ArticleBean> mArticleList;
+    private ArticleAdapter mArticleAdapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -65,7 +79,7 @@ public class SearchActivity extends BaseActivity implements BaseQuickAdapter.Req
         });
 
         mHotWordList = new ArrayList<>();
-        mTagAdapter = new TagAdapter<HotWordBean>(mHotWordList) {
+        mTagHotWordAdapter = new TagAdapter<HotWordBean>(mHotWordList) {
             @Override
             public View getView(FlowLayout parent, int position, HotWordBean hotWordBean) {
                 TextView tvHotWord = (TextView) getLayoutInflater().inflate(R.layout.adapter_hotword,
@@ -74,7 +88,7 @@ public class SearchActivity extends BaseActivity implements BaseQuickAdapter.Req
                 return tvHotWord;
             }
         };
-        mFlowLayoutHotKeyWord.setAdapter(mTagAdapter);
+        mFlowLayoutHotKeyWord.setAdapter(mTagHotWordAdapter);
         mFlowLayoutHotKeyWord.setOnTagClickListener(new TagFlowLayout.OnTagClickListener() {
             @Override
             public boolean onTagClick(View view, int position, FlowLayout parent) {
@@ -87,6 +101,48 @@ public class SearchActivity extends BaseActivity implements BaseQuickAdapter.Req
             }
         });
 
+        mFriendWebList = new ArrayList<>();
+        mTagFriendWebAdapter = new TagAdapter<HotWordBean>(mFriendWebList){
+            @Override
+            public View getView(FlowLayout parent, int position, HotWordBean hotWordBean) {
+                TextView tvFriendWeb = (TextView) getLayoutInflater().inflate(R.layout.adapter_hotword,
+                        mFlowLayoutFriendWeb,false);
+                tvFriendWeb.setText(hotWordBean.getName());
+                return tvFriendWeb;
+            }
+        };
+        mFlowLayoutFriendWeb.setAdapter(mTagFriendWebAdapter);
+        mFlowLayoutFriendWeb.setOnTagClickListener(new TagFlowLayout.OnTagClickListener() {
+            @Override
+            public boolean onTagClick(View view, int position, FlowLayout parent) {
+                HotWordBean hotWordBean = mFriendWebList.get(position);
+                String url = hotWordBean.getLink();
+                String title = hotWordBean.getName();
+                Intent intent = new Intent(SearchActivity.this, WebActivity.class);
+                intent.putExtra("url", url);
+                intent.putExtra("title", title);
+                startActivity(intent);
+                return false;
+            }
+        });
+
+        mArticleList = new ArrayList<>();
+        LinearLayoutManager manager = new LinearLayoutManager(this);
+        mRecyclerViewArticle.setLayoutManager(manager);
+        mArticleAdapter = new ArticleAdapter(this,mArticleList);
+        mRecyclerViewArticle.setAdapter(mArticleAdapter);
+        mArticleAdapter.setOnItemClickListener(new BaseQuickAdapter.OnItemClickListener() {
+            @Override
+            public void onItemClick(BaseQuickAdapter adapter, View view, int position) {
+                ArticleBean article = (ArticleBean) adapter.getData().get(position);
+                String url = article.getLink();
+                String title = article.getTitle();
+                Intent intent = new Intent(SearchActivity.this, WebActivity.class);
+                intent.putExtra("url", url);
+                intent.putExtra("title", title);
+                startActivity(intent);
+            }
+        });
 
 
         mClearEditTextKeyWord.setOnKeyListener(new View.OnKeyListener() {
@@ -99,12 +155,17 @@ public class SearchActivity extends BaseActivity implements BaseQuickAdapter.Req
             }
         });
 
+        initData();
+
+    }
+
+    private void initData() {
         ApiUtil.getHotWordListData(new Callback<BaseResponse<List<HotWordBean>>>() {
             @Override
             public void onResponse(Call<BaseResponse<List<HotWordBean>>> call,
                                    Response<BaseResponse<List<HotWordBean>>> response) {
                 mHotWordList.addAll(response.body().getData());
-                mTagAdapter.notifyDataChanged();
+                mTagHotWordAdapter.notifyDataChanged();
             }
 
             @Override
@@ -113,6 +174,19 @@ public class SearchActivity extends BaseActivity implements BaseQuickAdapter.Req
             }
         });
 
+        ApiUtil.getFriendWebData(new Callback<BaseResponse<List<HotWordBean>>>() {
+            @Override
+            public void onResponse(Call<BaseResponse<List<HotWordBean>>> call,
+                                   Response<BaseResponse<List<HotWordBean>>> response) {
+                mFriendWebList.addAll(response.body().getData());
+                mTagFriendWebAdapter.notifyDataChanged();
+            }
+
+            @Override
+            public void onFailure(Call<BaseResponse<List<HotWordBean>>> call, Throwable t) {
+
+            }
+        });
     }
 
 
@@ -129,8 +203,12 @@ public class SearchActivity extends BaseActivity implements BaseQuickAdapter.Req
                 Log.e(TAG, "onResponse: total=0" );
                 if (response.body() == null)
                 Log.e(TAG, "onResponse: response.body is null" );
-                mLinearLayoutHotWord.setVisibility(View.GONE);//热词隐藏
+                mScrollViewHotWord.setVisibility(View.GONE);//热词隐藏
                 Log.e(TAG, "onResponse: "+response.body().getData().toString() );
+                mRecyclerViewArticle.setVisibility(View.VISIBLE);
+                mArticleList.clear();
+                mArticleList.addAll(response.body().getData().getDatas());
+                mArticleAdapter.notifyDataSetChanged();
 
             }
 
@@ -144,11 +222,12 @@ public class SearchActivity extends BaseActivity implements BaseQuickAdapter.Req
 
     @Override
     public void onBackPressed() {
-        if (mLinearLayoutHotWord.getVisibility() == View.VISIBLE){
+        if (mScrollViewHotWord.getVisibility() == View.VISIBLE){
             super.onBackPressed();
 //            finish();
         } else {
-            mLinearLayoutHotWord.setVisibility(View.VISIBLE);
+            mScrollViewHotWord.setVisibility(View.VISIBLE);
+            mRecyclerViewArticle.setVisibility(View.GONE);
         }
     }
 

@@ -56,6 +56,14 @@ public interface WanApiService {
     @GET("hotkey/json")
     Call<BaseResponse<List<HotWordBean>>> hotWordList();
 
+
+    /**
+     * 常用网站
+     * @return
+     */
+    @GET("/friend/json")
+    Call<BaseResponse<List<HotWordBean>>> friendWebList();
+
     /**
      * 搜索文章
      * @param page
@@ -64,7 +72,8 @@ public interface WanApiService {
      */
     @POST("article/query/{page}/json")
     @FormUrlEncoded
-    Call<BaseResponse<ArticleListBean>> searchArticleList(@Path("page") int page, @Field("k") String keyWord);
+    Call<BaseResponse<ArticleListBean>> searchArticleList(@Path("page") int page,
+                                                          @Field("k") String keyWord);
 
     /**
      * 登录
@@ -74,7 +83,21 @@ public interface WanApiService {
      */
     @POST("user/login")
     @FormUrlEncoded
-    Call<BaseResponse<UserBean>> requestLogin(@Field("username") String userName, @Field("password") String password);
+    Call<BaseResponse<UserBean>> requestLogin(@Field("username") String userName,
+                                              @Field("password") String password);
+
+    /**
+     * 注册
+     * @param userName
+     * @param password
+     * @param rePassword
+     * @return
+     */
+    @POST("/user/register")
+    @FormUrlEncoded
+    Call<BaseResponse<UserBean>> requestRegister(@Field("username") String userName,
+                                                 @Field("password") String password,
+                                                 @Field("repassword") String rePassword);
 
     /**
      * 知识体系分类下的文章列表
@@ -120,4 +143,6 @@ public interface WanApiService {
      */
     @POST("lg/uncollect_originId/{id}/json")
     Call<BaseResponse<ArticleListBean>> unCollectWanArticle(@Path("id") int id);
+
+
 }

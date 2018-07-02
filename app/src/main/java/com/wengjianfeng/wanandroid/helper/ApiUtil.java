@@ -67,6 +67,16 @@ public class ApiUtil {
     }
 
     /**
+     * 常用网站
+     * @param callback
+     */
+    public static void getFriendWebData(Callback<BaseResponse<List<HotWordBean>>> callback){
+
+        Call<BaseResponse<List<HotWordBean>>> call = wanApiService.friendWebList();
+        call.enqueue(callback);
+    }
+
+    /**
      * 搜索文章
      *
      * @param callback
@@ -89,6 +99,19 @@ public class ApiUtil {
         Call<BaseResponse<UserBean>> call = wanApiService.requestLogin(userName,password);
         call.enqueue(callback);
 
+    }
+
+    /**
+     * 注册
+     * @param callback
+     * @param userName
+     * @param password
+     * @param rePassword
+     */
+    public static void requestRegister(Callback<BaseResponse<UserBean>> callback,
+                                       String userName,String password,String rePassword){
+        Call<BaseResponse<UserBean>> call = wanApiService.requestRegister(userName,password,rePassword);
+        call.enqueue(callback);
     }
 
     /**
@@ -124,6 +147,11 @@ public class ApiUtil {
 
     }
 
+    /**
+     * 取消文章收藏
+     * @param callback
+     * @param id
+     */
     public static void unCollectArticleData(Callback<BaseResponse<ArticleListBean>> callback,
                                             int id){
         Call<BaseResponse<ArticleListBean>> call = wanApiService.unCollectWanArticle(id);

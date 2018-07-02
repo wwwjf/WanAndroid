@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
@@ -72,6 +73,12 @@ public class LoginActivity extends BaseActivity {
                 finish();
                 break;
             case R.id.btn_login:
+                String userName = mEditTextUserName.getText().toString();
+                String password = mEditTextPassword.getText().toString();
+                if (TextUtils.isEmpty(userName)&& TextUtils.isEmpty(password)){
+                    ToastUtils.showShort("请输入用户名和密码");
+                    return;
+                }
                 ApiUtil.requestLogin(new Callback<BaseResponse<UserBean>>() {
                     @Override
                     public void onResponse(Call<BaseResponse<UserBean>> call, Response<BaseResponse<UserBean>> response) {
@@ -96,8 +103,7 @@ public class LoginActivity extends BaseActivity {
                         Log.e(TAG, "onFailure: 登录失败");
                         ToastUtils.showShort("连接服务器失败");
                     }
-                },mEditTextUserName.getText().toString(),
-                  mEditTextPassword.getText().toString());
+                }, userName,password);
                 break;
             case R.id.btn_register:
                 startActivity(new Intent(LoginActivity.this,RegisterActivity.class));

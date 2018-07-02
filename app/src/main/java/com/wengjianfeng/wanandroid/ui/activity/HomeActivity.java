@@ -134,7 +134,8 @@ public class HomeActivity extends AppCompatActivity
             ivLogin.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    showLogin();
+                    if (!UserInfoManager.isLogin())
+                        showLogin();
                 }
             });
         }

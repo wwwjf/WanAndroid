@@ -7,6 +7,7 @@ import android.support.v4.app.Fragment;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.view.ViewPager;
 import android.support.v7.widget.Toolbar;
+import android.view.View;
 import android.widget.LinearLayout;
 
 import com.blankj.utilcode.util.SizeUtils;
@@ -63,5 +64,11 @@ public class ChapterDetailActivity extends BaseActivity {
         mViewPagerChapterDetail.setAdapter(detailPagerAdapter);
         mTabLayoutChapterDetail.addOnTabSelectedListener(new TabLayout.ViewPagerOnTabSelectedListener(mViewPagerChapterDetail));
         mViewPagerChapterDetail.addOnPageChangeListener(new TabLayout.TabLayoutOnPageChangeListener(mTabLayoutChapterDetail));
+        mToolBarChapterDetail.setNavigationOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                onBackPressed();
+            }
+        });
     }
 }

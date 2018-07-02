@@ -1,14 +1,12 @@
 package com.wengjianfeng.wanandroid.ui.fragment;
 
-import android.content.Context;
-import android.net.Uri;
+import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -19,9 +17,9 @@ import com.wengjianfeng.wanandroid.helper.ApiUtil;
 import com.wengjianfeng.wanandroid.model.BaseResponse;
 import com.wengjianfeng.wanandroid.model.pojo.ArticleBean;
 import com.wengjianfeng.wanandroid.model.pojovo.ArticleListBean;
+import com.wengjianfeng.wanandroid.ui.activity.WebActivity;
 import com.wengjianfeng.wanandroid.ui.adapter.ArticleAdapter;
 
-import java.io.IOException;
 import java.util.ArrayList;
 
 import butterknife.BindView;
@@ -54,8 +52,8 @@ public class ChapterDetailFragment extends Fragment
     //是否是第一次开启网络加载
     public boolean isFirst;
 
-    private ArrayList<ArticleBean> mArticleList;
-    private ArticleAdapter mArticleAdapter;
+    private ArrayList<ArticleBean> mChapterArticleList;
+    private ArticleAdapter mChapterArticleAdapter;
 
     @BindView(R.id.ptrClassicFrameLayout_chapterArticle)
     PtrClassicFrameLayout mPtrChapterArticle;
@@ -97,14 +95,27 @@ public class ChapterDetailFragment extends Fragment
             onFragmentVisibleChange(true);
         }
 
-        mArticleList = new ArrayList<>();
+        mChapterArticleList = new ArrayList<>();
         LinearLayoutManager layoutManager = new LinearLayoutManager(getActivity());
         mRecyclerViewChapterArticle.setLayoutManager(layoutManager);
-        mArticleAdapter = new ArticleAdapter(getActivity(), mArticleList);
-        mArticleAdapter.setEnableLoadMore(true);
-        mArticleAdapter.setOnLoadMoreListener(this,mRecyclerViewChapterArticle);
-        mRecyclerViewChapterArticle.setAdapter(mArticleAdapter);
-        mArticleAdapter.setHeaderFooterEmpty(true,true);
+        mChapterArticleAdapter = new ArticleAdapter(getActivity(), mChapterArticleList);
+        mChapterArticleAdapter.setEnableLoadMore(true);
+        mChapterArticleAdapter.setOnLoadMoreListener(this,mRecyclerViewChapterArticle);
+        mRecyclerViewChapterArticle.setAdapter(mChapterArticleAdapter);
+        mChapterArticleAdapter.setHeaderFooterEmpty(true,true);
+        mChapterArticleAdapter.setOnItemClickListener(new BaseQuickAdapter.OnItemClickListener() {
+            @Override
+            public void onItemClick(BaseQuickAdapter adapter, View view, int position) {
+                ArticleBean article = (ArticleBean) adapter.getData().get(position);
+                String url = article.getLink();
+                String title = article.getTitle();
+                Intent intent = new Intent(getActivity(), WebActivity.class);
+                intent.putExtra("url", url);
+                intent.putExtra("title", title);
+                startActivity(intent);
+            }
+        });
+        
 
         return rootView;
     }
@@ -112,8 +123,8 @@ public class ChapterDetailFragment extends Fragment
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-        mArticleAdapter.setNewData(mArticleList);
-        mArticleAdapter.setEmptyView(R.layout.view_load_empty);
+        mChapterArticleAdapter.setNewData(mChapterArticleList);
+        mChapterArticleAdapter.setEmptyView(R.layout.view_load_empty);
         mPtrChapterArticle.setLastUpdateTimeRelateObject(this);
         mPtrChapterArticle.setPtrHandler(new PtrHandler() {
             @Override
@@ -137,9 +148,9 @@ public class ChapterDetailFragment extends Fragment
             public void onResponse(Call<BaseResponse<ArticleListBean>> call,
                                    Response<BaseResponse<ArticleListBean>> response) {
                 mPtrChapterArticle.refreshComplete();
-                mArticleList.clear();
-                mArticleList.addAll(response.body().getData().getDatas());
-                mArticleAdapter.notifyDataSetChanged();
+                mChapterArticleList.clear();
+                mChapterArticleList.addAll(response.body().getData().getDatas());
+                mChapterArticleAdapter.notifyDataSetChanged();
             }
 
             @Override
@@ -187,8 +198,8 @@ public class ChapterDetailFragment extends Fragment
         new Handler().postDelayed(new Runnable() {
             @Override
             public void run() {
-                mArticleAdapter.loadMoreEnd(true);
-                mArticleAdapter.loadMoreComplete();
+                mChapterArticleAdapter.loadMoreEnd(true);
+                mChapterArticleAdapter.loadMoreComplete();
             }
         },2000);
 

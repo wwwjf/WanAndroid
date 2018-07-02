@@ -1,11 +1,16 @@
 package com.wengjianfeng.wanandroid.ui.activity;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
+import android.view.Menu;
+import android.view.MenuItem;
+import android.view.View;
 
+import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.wengjianfeng.wanandroid.R;
 import com.wengjianfeng.wanandroid.base.BaseActivity;
 import com.wengjianfeng.wanandroid.helper.ApiUtil;
@@ -45,11 +50,39 @@ public class CollectionActivity extends BaseActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_collection);
 
+        mToolbarCollection.setTitle("收藏文章列表");
+        setSupportActionBar(mToolbarCollection);
+        mToolbarCollection.setOnMenuItemClickListener(new Toolbar.OnMenuItemClickListener() {
+            @Override
+            public boolean onMenuItemClick(MenuItem item) {
+
+                return false;
+            }
+        });
+        mToolbarCollection.setNavigationOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                onBackPressed();
+            }
+        });
+
         LinearLayoutManager manager = new LinearLayoutManager(this);
         mRecyclerViewCollection.setLayoutManager(manager);
         mArticleList = new ArrayList<>();
         mArticleAdapter = new ArticleAdapter(this,mArticleList);
         mRecyclerViewCollection.setAdapter(mArticleAdapter);
+        mArticleAdapter.setOnItemClickListener(new BaseQuickAdapter.OnItemClickListener() {
+            @Override
+            public void onItemClick(BaseQuickAdapter adapter, View view, int position) {
+                ArticleBean article = (ArticleBean) adapter.getData().get(position);
+                String url = article.getLink();
+                String title = article.getTitle();
+                Intent intent = new Intent(CollectionActivity.this, WebActivity.class);
+                intent.putExtra("url", url);
+                intent.putExtra("title", title);
+                startActivity(intent);
+            }
+        });
         mArticleAdapter.bindToRecyclerView(mRecyclerViewCollection);
         mArticleAdapter.setHeaderFooterEmpty(true, true);
         mArticleAdapter.setEmptyView(R.layout.view_load_empty);
@@ -78,5 +111,11 @@ public class CollectionActivity extends BaseActivity {
 
             }
         },0);
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.menu_add, menu);
+        return true;
     }
 }

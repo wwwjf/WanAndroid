@@ -2,9 +2,11 @@ package com.wengjianfeng.wanandroid.ui.activity;
 
 import android.content.Intent;
 import android.graphics.Color;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.v7.widget.ShareActionProvider;
 import android.support.v7.widget.Toolbar;
 import android.view.KeyEvent;
 import android.view.Menu;
@@ -62,7 +64,7 @@ public class WebActivity extends BaseAgentWebActivity {
          */
         @Override
         public void onError(SHARE_MEDIA platform, Throwable t) {
-            ToastUtils.showShort("分享失败，"+t.getMessage());
+            ToastUtils.showShort("分享失败，" + t.getMessage());
         }
 
         /**
@@ -97,12 +99,26 @@ public class WebActivity extends BaseAgentWebActivity {
         mToolbar.setOnMenuItemClickListener(new Toolbar.OnMenuItemClickListener() {
             @Override
             public boolean onMenuItemClick(MenuItem item) {
-                switch (item.getItemId()){
+                switch (item.getItemId()) {
                     case R.id.menu_item_share:
                         new ShareAction(WebActivity.this)
-                                .withText("hello")
-                                .setDisplayList(SHARE_MEDIA.SINA,SHARE_MEDIA.QQ,SHARE_MEDIA.WEIXIN)
+                                .withText("分享文章： " + WebActivity.this.getUrl())
+                                .setDisplayList(SHARE_MEDIA.SINA,
+                                        SHARE_MEDIA.QQ,
+                                        SHARE_MEDIA.WEIXIN,
+                                        SHARE_MEDIA.YNOTE)
                                 .setCallback(shareListener).open();
+                        break;
+                    case R.id.menu_item_browser:
+                        try {
+                            Intent intent = new Intent();
+                            intent.setAction("android.intent.action.VIEW");
+                            Uri url = Uri.parse(getUrl());
+                            intent.setData(url);
+                            startActivity(intent);
+                        } catch (Exception e) {
+                            ToastUtils.showShort("未找到浏览器");
+                        }
                         break;
                     default:
                         break;
@@ -129,6 +145,7 @@ public class WebActivity extends BaseAgentWebActivity {
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.menu_more, menu);
+
         return true;
     }
 

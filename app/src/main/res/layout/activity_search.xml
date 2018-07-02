@@ -18,48 +18,68 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:minHeight="?attr/actionBarSize"
-            app:navigationIcon="@drawable/ic_back"
             android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"
-            app:contentInsetStartWithNavigation="0dp">
+            app:contentInsetStartWithNavigation="0dp"
+            app:navigationIcon="@drawable/ic_back">
 
             <com.wengjianfeng.wanandroid.widget.ClearEditText
                 android:id="@+id/clearEditText_search_keyWord"
+                style="@style/MyEditText"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_marginEnd="10dp"
                 android:layout_marginRight="10dp"
-                style="@style/MyEditText"
                 android:drawableBottom="@drawable/line_white"
-                android:imeOptions="actionGo"
                 android:hint="搜索支持多个关键词，用空格隔开"
+                android:imeOptions="actionGo"
                 android:textCursorDrawable="@null" />
         </android.support.v7.widget.Toolbar>
     </android.support.design.widget.AppBarLayout>
 
-    <LinearLayout
-        android:id="@+id/linearLayout_search_hotKeyWord"
+    <ScrollView
+        android:id="@+id/scrollView_search_hotKeyWord"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="vertical">
+        android:layout_height="wrap_content">
 
-        <TextView
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="10dp"
-            android:text="大家都在搜"
-            android:textColor="@color/text0"
-            android:textSize="18sp" />
+            android:orientation="vertical">
 
-        <com.zhy.view.flowlayout.TagFlowLayout
-            android:id="@+id/flowLayout_search_hotKeyWord"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            app:max_select="1" />
-    </LinearLayout>
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:text="大家都在搜"
+                android:textColor="@color/text0"
+                android:textSize="18sp" />
+
+            <com.zhy.view.flowlayout.TagFlowLayout
+                android:id="@+id/flowLayout_search_hotKeyWord"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:max_select="1" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="20dp"
+                android:text="常用网站"
+                android:textColor="@color/text0"
+                android:textSize="18sp" />
+
+            <com.zhy.view.flowlayout.TagFlowLayout
+                android:id="@+id/flowLayout_search_friendWeb"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:max_select="1" />
+        </LinearLayout>
+    </ScrollView>
+
 
     <android.support.v7.widget.RecyclerView
         android:id="@+id/recyclerView_search_article"
         android:layout_width="match_parent"
-        android:visibility="gone"
-        android:layout_height="match_parent" />
+        android:layout_height="match_parent"
+        android:visibility="gone" />
 </LinearLayout>
