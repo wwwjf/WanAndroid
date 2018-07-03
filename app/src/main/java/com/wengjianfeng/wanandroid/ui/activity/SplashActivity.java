@@ -6,21 +6,29 @@ import android.os.SystemClock;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.text.format.DateUtils;
+import android.util.Log;
 import android.view.Window;
 import android.view.WindowManager;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.ImageView;
 
+import com.blankj.utilcode.util.TimeUtils;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.DataSource;
 import com.bumptech.glide.load.engine.GlideException;
 import com.bumptech.glide.request.RequestListener;
 import com.bumptech.glide.request.RequestOptions;
 import com.bumptech.glide.request.target.Target;
+import com.bumptech.glide.signature.ObjectKey;
 import com.wengjianfeng.wanandroid.R;
+import com.wengjianfeng.wanandroid.app.WanApp;
 import com.wengjianfeng.wanandroid.app.WanConstants;
 import com.wengjianfeng.wanandroid.base.BaseActivity;
+
+import java.text.Format;
+import java.text.SimpleDateFormat;
 
 import butterknife.BindAnim;
 import butterknife.BindView;
@@ -42,6 +50,8 @@ public class SplashActivity extends BaseActivity {
         setContentView(R.layout.activity_splash);
         animation=new AnimationUtils().loadAnimation(this,R.anim.anim_zoom_in);
         animation.setFillAfter(true);//动画执行完毕后停留在最后一帧
+        String date2String = TimeUtils.date2String(TimeUtils.getNowDate(),new SimpleDateFormat("yyyy-MM-dd"));
+        Log.e(TAG, "onCreate: date2String="+date2String );
         Glide.with(this)
                 .load(WanConstants.SPLASH_HTTP_URL)
                 .listener(new RequestListener<Drawable>() {
@@ -56,7 +66,8 @@ public class SplashActivity extends BaseActivity {
                         return false;
                     }
                 })
-                .apply(new RequestOptions().placeholder(R.mipmap.ic_launcher_round))
+//                .apply(new RequestOptions().placeholder(R.mipmap.ic_launcher_round))
+                .apply(new RequestOptions().signature(new ObjectKey(date2String)))//缓存刷新
                 .into(mImageViewSplash);
 
 

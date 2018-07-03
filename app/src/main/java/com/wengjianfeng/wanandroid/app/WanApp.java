@@ -3,6 +3,8 @@ package com.wengjianfeng.wanandroid.app;
 import android.app.Application;
 
 import com.blankj.utilcode.util.Utils;
+import com.bumptech.glide.annotation.GlideModule;
+import com.bumptech.glide.module.AppGlideModule;
 import com.facebook.stetho.Stetho;
 import com.orhanobut.logger.AndroidLogAdapter;
 import com.orhanobut.logger.Logger;
