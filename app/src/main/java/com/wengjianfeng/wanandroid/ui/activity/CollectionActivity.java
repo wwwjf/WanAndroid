@@ -83,6 +83,7 @@ public class CollectionActivity extends BaseActivity {
                 startActivity(intent);
             }
         });
+        //TEST
         mArticleAdapter.bindToRecyclerView(mRecyclerViewCollection);
         mArticleAdapter.setHeaderFooterEmpty(true, true);
         mArticleAdapter.setEmptyView(R.layout.view_load_empty);
