@@ -14,6 +14,8 @@ import android.widget.ScrollView;
 import android.widget.TextView;
 
 import com.chad.library.adapter.base.BaseQuickAdapter;
+import com.ethanhua.skeleton.Skeleton;
+import com.ethanhua.skeleton.SkeletonScreen;
 import com.wengjianfeng.wanandroid.R;
 import com.wengjianfeng.wanandroid.base.BaseActivity;
 import com.wengjianfeng.wanandroid.helper.ApiUtil;
@@ -64,6 +66,8 @@ public class SearchActivity extends BaseActivity implements BaseQuickAdapter.Req
 
     private List<ArticleBean> mArticleList;
     private ArticleAdapter mArticleAdapter;
+
+    private SkeletonScreen skeletonScreen;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -126,6 +130,8 @@ public class SearchActivity extends BaseActivity implements BaseQuickAdapter.Req
             }
         });
 
+
+
         mArticleList = new ArrayList<>();
         LinearLayoutManager manager = new LinearLayoutManager(this);
         mRecyclerViewArticle.setLayoutManager(manager);
@@ -143,7 +149,15 @@ public class SearchActivity extends BaseActivity implements BaseQuickAdapter.Req
                 startActivity(intent);
             }
         });
-
+        skeletonScreen = Skeleton.bind(mRecyclerViewArticle)
+                .adapter(mArticleAdapter)
+                .shimmer(true)
+                .angle(20)
+                .frozen(false)
+                .duration(1200)
+                .count(10)
+                .load(R.layout.item_skeleton_article)
+                .show(); //default count is 10
 
         mClearEditTextKeyWord.setOnKeyListener(new View.OnKeyListener() {
             @Override
@@ -209,7 +223,12 @@ public class SearchActivity extends BaseActivity implements BaseQuickAdapter.Req
                 mArticleList.clear();
                 mArticleList.addAll(response.body().getData().getDatas());
                 mArticleAdapter.notifyDataSetChanged();
-
+                mRecyclerViewArticle.postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
+                        skeletonScreen.hide();
+                    }
+                },500);
             }
 
             @Override

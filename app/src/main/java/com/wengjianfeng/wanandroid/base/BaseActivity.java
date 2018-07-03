@@ -39,21 +39,7 @@ public class BaseActivity extends AppCompatActivity {
                 .setClosePercent(0.8f)//触发关闭Activity百分比
                 .setSwipeRelateEnable(false)//是否与下一级activity联动(微信效果)。默认关
                 .setSwipeRelateOffset(500);//activity联动时的偏移量。默认500px。
-        if(Build.VERSION.SDK_INT>=23){
-            String[] mPermissionList = new String[]{
-                    Manifest.permission.WRITE_EXTERNAL_STORAGE,
-                    Manifest.permission.ACCESS_FINE_LOCATION,
-                    Manifest.permission.CALL_PHONE,
-                    Manifest.permission.READ_LOGS,
-                    Manifest.permission.READ_PHONE_STATE,
-                    Manifest.permission.READ_EXTERNAL_STORAGE,
-                    Manifest.permission.SET_DEBUG_APP,
-                    Manifest.permission.SYSTEM_ALERT_WINDOW,
-                    Manifest.permission.GET_ACCOUNTS,
-                    Manifest.permission.WRITE_APN_SETTINGS};
-            ActivityCompat.requestPermissions(this,mPermissionList,
-                    WanConstants.PERMISSION_REQUESTCODE);
-        }
+
     }
 
     @Override
@@ -90,15 +76,5 @@ public class BaseActivity extends AppCompatActivity {
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         UMShareAPI.get(this).onActivityResult(requestCode, resultCode, data);
-    }
-
-    @Override
-    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
-        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
-        if (requestCode == WanConstants.PERMISSION_REQUESTCODE){
-            for (int grantResult : grantResults) {
-                Log.e(TAG, "onRequestPermissionsResult: grantResult="+grantResult);
-            }
-        }
     }
 }
