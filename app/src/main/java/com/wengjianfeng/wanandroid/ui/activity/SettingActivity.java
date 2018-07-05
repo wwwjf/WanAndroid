@@ -1,6 +1,7 @@
 package com.wengjianfeng.wanandroid.ui.activity;
 
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 
 import com.wengjianfeng.wanandroid.R;
 import com.wengjianfeng.wanandroid.base.BaseActivity;

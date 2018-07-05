@@ -26,4 +26,5 @@
     <color name="divider_color">@color/text4</color>
 
     <color name="colorLine">#dfdfdf</color>
+    <color name="line_bg">#e6e6e6</color>
 </resources>
