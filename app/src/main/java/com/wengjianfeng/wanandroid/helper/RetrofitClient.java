@@ -2,7 +2,6 @@ package com.wengjianfeng.wanandroid.helper;
 
 import com.wengjianfeng.wanandroid.app.WanConstants;
 import com.wengjianfeng.wanandroid.helper.interceptor.LoadCookieInterceptor;
-import com.wengjianfeng.wanandroid.helper.interceptor.SaveCookieInterceptor;
 
 import okhttp3.OkHttpClient;
 import retrofit2.Retrofit;

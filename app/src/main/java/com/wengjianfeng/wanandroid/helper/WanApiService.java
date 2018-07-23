@@ -1,8 +1,7 @@
 package com.wengjianfeng.wanandroid.helper;
 
-import com.wengjianfeng.wanandroid.model.pojo.ArticleBean;
-import com.wengjianfeng.wanandroid.model.pojo.BannerBean;
 import com.wengjianfeng.wanandroid.model.BaseResponse;
+import com.wengjianfeng.wanandroid.model.pojo.BannerBean;
 import com.wengjianfeng.wanandroid.model.pojo.HotWordBean;
 import com.wengjianfeng.wanandroid.model.pojo.UserBean;
 import com.wengjianfeng.wanandroid.model.pojovo.ArticleListBean;
@@ -10,9 +9,7 @@ import com.wengjianfeng.wanandroid.model.pojovo.ChapterBean;
 
 import java.util.List;
 
-import okhttp3.RequestBody;
 import retrofit2.Call;
-import retrofit2.http.Body;
 import retrofit2.http.Field;
 import retrofit2.http.FormUrlEncoded;
 import retrofit2.http.GET;

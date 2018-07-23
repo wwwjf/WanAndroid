@@ -23,6 +23,7 @@ import com.bumptech.glide.request.RequestOptions;
 import com.bumptech.glide.request.target.Target;
 import com.bumptech.glide.signature.ObjectKey;
 import com.wengjianfeng.wanandroid.R;
+import com.wengjianfeng.wanandroid.app.GlideApp;
 import com.wengjianfeng.wanandroid.app.WanApp;
 import com.wengjianfeng.wanandroid.app.WanConstants;
 import com.wengjianfeng.wanandroid.base.BaseActivity;
