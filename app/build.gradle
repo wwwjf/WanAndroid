@@ -89,6 +89,7 @@ dependencies {
     implementation 'com.ethanhua:skeleton:1.1.1'
     implementation 'io.supercharge:shimmerlayout:2.1.0'
     implementation 'com.android.support.constraint:constraint-layout:1.0.2'
+    implementation 'com.werb.permissionschecker:permissionschecker:0.0.1-beta2'
 }
 repositories {
     mavenCentral()

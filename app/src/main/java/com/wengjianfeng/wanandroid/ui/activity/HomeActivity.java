@@ -2,9 +2,12 @@ package com.wengjianfeng.wanandroid.ui.activity;
 
 import android.Manifest;
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
+import android.provider.Settings;
 import android.support.annotation.NonNull;
+import android.support.annotation.RequiresApi;
 import android.support.design.widget.NavigationView;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.ActivityCompat;
@@ -36,6 +39,8 @@ import com.wengjianfeng.wanandroid.ui.event.UserEvent;
 import com.wengjianfeng.wanandroid.ui.fragment.ChapterFragment;
 import com.wengjianfeng.wanandroid.ui.fragment.HomeFragment;
 import com.wengjianfeng.wanandroid.ui.fragment.UserFragment;
+import com.wengjianfeng.wanandroid.utils.ScreenBrightnessTool;
+import com.werb.permissionschecker.PermissionChecker;
 
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
@@ -48,7 +53,7 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 
 public class HomeActivity extends AppCompatActivity
-        implements NavigationView.OnNavigationItemSelectedListener{
+        implements NavigationView.OnNavigationItemSelectedListener {
     public static final String TAG = HomeActivity.class.getSimpleName();
 
     @BindView(R.id.drawerLayout)
@@ -76,6 +81,7 @@ public class HomeActivity extends AppCompatActivity
         }
     }
 
+    @RequiresApi(api = Build.VERSION_CODES.M)
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -83,6 +89,20 @@ public class HomeActivity extends AppCompatActivity
 //        initImmersive();
 
         ButterKnife.bind(this);
+
+        if (!Settings.System.canWrite(this)) {
+//            mPermissionChecker.requestPermissions();
+            Intent intent = new Intent(Settings.ACTION_MANAGE_WRITE_SETTINGS);
+            intent.setData(Uri.parse("package:" + getPackageName()));
+            startActivityForResult(intent, 123);
+        } else {
+            ScreenBrightnessTool builder = ScreenBrightnessTool.Builder(this);
+            boolean systemAutomaticMode = builder.getSystemAutomaticMode();
+            if (systemAutomaticMode) {
+                builder.setMode(ScreenBrightnessTool.SCREEN_BRIGHTNESS_MODE_MANUAL);
+            }
+            builder.setBrightness(100);
+        }
 
         setViewPager();
         mToolbar.setTitle(mPagerAdapter.getPageTitle(0));
@@ -94,7 +114,7 @@ public class HomeActivity extends AppCompatActivity
             public boolean onMenuItemClick(MenuItem item) {
                 switch (item.getItemId()) {
                     case R.id.menu_item_search:
-                        startActivity(new Intent(HomeActivity.this,SearchActivity.class));
+                        startActivity(new Intent(HomeActivity.this, SearchActivity.class));
                         break;
                     default:
                         break;
@@ -119,7 +139,7 @@ public class HomeActivity extends AppCompatActivity
         mNavigationView.setNavigationItemSelectedListener(this);
         initHeaderView();
 
-        if(Build.VERSION.SDK_INT>=23){
+        if (Build.VERSION.SDK_INT >= 23) {
             String[] mPermissionList = new String[]{
                     Manifest.permission.WRITE_EXTERNAL_STORAGE,
                     Manifest.permission.ACCESS_FINE_LOCATION,
@@ -130,7 +150,7 @@ public class HomeActivity extends AppCompatActivity
                     Manifest.permission.SYSTEM_ALERT_WINDOW,
                     Manifest.permission.GET_ACCOUNTS,
                     Manifest.permission.WRITE_APN_SETTINGS};
-            ActivityCompat.requestPermissions(this,mPermissionList,
+            ActivityCompat.requestPermissions(this, mPermissionList,
                     WanConstants.PERMISSION_REQUESTCODE);
         }
 
@@ -142,7 +162,7 @@ public class HomeActivity extends AppCompatActivity
         TextView tvUserName = headerView.findViewById(R.id.tv_nav_header_userName);
         Button btnExit = headerView.findViewById(R.id.btn_nav_header_exit);
 
-        if (UserInfoManager.isLogin()){
+        if (UserInfoManager.isLogin()) {
             UserBean user = UserInfoManager.getUserInfo();
             if (user != null) {
                 tvUserName.setText(user.getUsername());
@@ -170,7 +190,7 @@ public class HomeActivity extends AppCompatActivity
     }
 
     private void showLogin() {
-        startActivity(new Intent(HomeActivity.this,LoginActivity.class));
+        startActivity(new Intent(HomeActivity.this, LoginActivity.class));
     }
 
     private void setViewPager() {
@@ -234,22 +254,22 @@ public class HomeActivity extends AppCompatActivity
     @Override
     protected void onResume() {
         super.onResume();
-        changeIconImgBottomMargin(mTabLayout,-0);
+        changeIconImgBottomMargin(mTabLayout, -0);
 
     }
 
     /**
      * TabLayout icon和文字同时存在 调整间隔
+     *
      * @param parent
      * @param px
      */
-    private void changeIconImgBottomMargin(ViewGroup parent, int px){
-        for(int i = 0; i < parent.getChildCount(); i++){
+    private void changeIconImgBottomMargin(ViewGroup parent, int px) {
+        for (int i = 0; i < parent.getChildCount(); i++) {
             View child = parent.getChildAt(i);
-            if(child instanceof ViewGroup){
+            if (child instanceof ViewGroup) {
                 changeIconImgBottomMargin((ViewGroup) child, px);
-            }
-            else if(child instanceof ImageView){
+            } else if (child instanceof ImageView) {
                 ViewGroup.MarginLayoutParams lp = ((ViewGroup.MarginLayoutParams) child.getLayoutParams());
                 lp.bottomMargin = px;
                 child.requestLayout();
@@ -261,7 +281,7 @@ public class HomeActivity extends AppCompatActivity
     public boolean onNavigationItemSelected(@NonNull MenuItem item) {
         int itemId = item.getItemId();
         Class destActivity = null;
-        switch (itemId){
+        switch (itemId) {
             case R.id.nav_collect://收藏
                 //检测是否登录
                 if (!UserInfoManager.isLogin()) {
@@ -280,7 +300,7 @@ public class HomeActivity extends AppCompatActivity
         }
         if (destActivity != null) {
             Intent intent = new Intent(this, destActivity);
-            if (itemId == R.id.nav_about){
+            if (itemId == R.id.nav_about) {
                 intent.putExtra("url", "http://www.wanandroid.com/about");
                 intent.putExtra("title", "关于");
             }
@@ -293,21 +313,45 @@ public class HomeActivity extends AppCompatActivity
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
-        if (requestCode == WanConstants.PERMISSION_REQUESTCODE){
+        if (requestCode == WanConstants.PERMISSION_REQUESTCODE) {
             for (int grantResult : grantResults) {
-                Log.e(TAG, "onRequestPermissionsResult: grantResult="+grantResult);
+                Log.e(TAG, "onRequestPermissionsResult: grantResult=" + grantResult);
             }
         }
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)
-    public void onUserEvent(UserEvent event){
+    public void onUserEvent(UserEvent event) {
         initHeaderView();
+    }
+
+
+    @RequiresApi(api = Build.VERSION_CODES.M)
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode == 123){
+            if (Settings.System.canWrite(this)){
+                ScreenBrightnessTool builder = ScreenBrightnessTool.Builder(this);
+                boolean systemAutomaticMode = builder.getSystemAutomaticMode();
+                if (systemAutomaticMode) {
+                    builder.setMode(ScreenBrightnessTool.SCREEN_BRIGHTNESS_MODE_MANUAL);
+                }
+                builder.setBrightness(100);
+            }
+        }
     }
 
     @Override
     protected void onDestroy() {
         super.onDestroy();
         EventBus.getDefault().unregister(this);
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            if (Settings.System.canWrite(this)) {
+                ScreenBrightnessTool.Builder(this).setMode(ScreenBrightnessTool.SCREEN_BRIGHTNESS_MODE_AUTOMATIC);
+            } else {
+                Log.e(TAG, "onDestroy: 无法修改系统设置");
+            }
+        }
     }
 }
