@@ -40,7 +40,6 @@ import com.wengjianfeng.wanandroid.ui.fragment.ChapterFragment;
 import com.wengjianfeng.wanandroid.ui.fragment.HomeFragment;
 import com.wengjianfeng.wanandroid.ui.fragment.UserFragment;
 import com.wengjianfeng.wanandroid.utils.ScreenBrightnessTool;
-import com.werb.permissionschecker.PermissionChecker;
 
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
@@ -85,7 +84,7 @@ public class HomeActivity extends AppCompatActivity
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
+        setContentView(R.layout.activity_home);
 //        initImmersive();
 
         ButterKnife.bind(this);

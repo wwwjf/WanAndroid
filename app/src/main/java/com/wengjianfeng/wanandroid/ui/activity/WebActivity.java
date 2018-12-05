@@ -6,7 +6,6 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
-import android.support.v7.widget.ShareActionProvider;
 import android.support.v7.widget.Toolbar;
 import android.view.KeyEvent;
 import android.view.Menu;
@@ -14,20 +13,12 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
-import android.widget.TextView;
-import android.widget.Toast;
 
 import com.blankj.utilcode.util.ToastUtils;
-import com.jude.swipbackhelper.SwipeBackHelper;
-import com.umeng.socialize.ShareAction;
-import com.umeng.socialize.UMShareAPI;
-import com.umeng.socialize.UMShareListener;
-import com.umeng.socialize.bean.SHARE_MEDIA;
 import com.wengjianfeng.wanandroid.R;
 import com.wengjianfeng.wanandroid.base.BaseAgentWebActivity;
 
 import butterknife.BindView;
-import butterknife.ButterKnife;
 
 public class WebActivity extends BaseAgentWebActivity {
     public static final String TAG = WebActivity.class.getSimpleName();
@@ -37,46 +28,6 @@ public class WebActivity extends BaseAgentWebActivity {
 
     @BindView(R.id.web_toolbar)
     Toolbar mToolbar;
-
-    private UMShareListener shareListener = new UMShareListener() {
-        /**
-         * @descrption 分享开始的回调
-         * @param platform 平台类型
-         */
-        @Override
-        public void onStart(SHARE_MEDIA platform) {
-
-        }
-
-        /**
-         * @descrption 分享成功的回调
-         * @param platform 平台类型
-         */
-        @Override
-        public void onResult(SHARE_MEDIA platform) {
-            ToastUtils.showShort("分享成功");
-        }
-
-        /**
-         * @descrption 分享失败的回调
-         * @param platform 平台类型
-         * @param t 错误原因
-         */
-        @Override
-        public void onError(SHARE_MEDIA platform, Throwable t) {
-            ToastUtils.showShort("分享失败，" + t.getMessage());
-        }
-
-        /**
-         * @descrption 分享取消的回调
-         * @param platform 平台类型
-         */
-        @Override
-        public void onCancel(SHARE_MEDIA platform) {
-            ToastUtils.showShort("取消分享");
-
-        }
-    };
 
 
     @Override
@@ -101,13 +52,7 @@ public class WebActivity extends BaseAgentWebActivity {
             public boolean onMenuItemClick(MenuItem item) {
                 switch (item.getItemId()) {
                     case R.id.menu_item_share:
-                        new ShareAction(WebActivity.this)
-                                .withText("分享文章： " + WebActivity.this.getUrl())
-                                .setDisplayList(SHARE_MEDIA.SINA,
-                                        SHARE_MEDIA.QQ,
-                                        SHARE_MEDIA.WEIXIN,
-                                        SHARE_MEDIA.YNOTE)
-                                .setCallback(shareListener).open();
+
                         break;
                     case R.id.menu_item_browser:
                         try {
@@ -131,7 +76,6 @@ public class WebActivity extends BaseAgentWebActivity {
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        UMShareAPI.get(this).onActivityResult(requestCode, resultCode, data);
     }
 
     @Override
