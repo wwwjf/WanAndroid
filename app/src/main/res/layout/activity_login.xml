@@ -23,7 +23,7 @@
         android:layout_height="wrap_content"
         android:layout_above="@id/clearEditText_login_userName"
         android:layout_centerHorizontal="true"
-        android:src="@mipmap/ic_launcher_round" />
+        android:src="@mipmap/ic_launcher" />
 
     <com.wengjianfeng.wanandroid.widget.ClearEditText
         android:id="@+id/clearEditText_login_userName"
