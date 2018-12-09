@@ -26,7 +26,7 @@ android {
     }
     compileSdkVersion 26
     defaultConfig {
-        applicationId "com.wjf.wanandroid"
+        applicationId "com.wengjianfeng.wanandroid"
         minSdkVersion 15
         targetSdkVersion 26
         versionCode 1

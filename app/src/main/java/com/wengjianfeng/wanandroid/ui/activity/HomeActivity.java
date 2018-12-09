@@ -91,9 +91,9 @@ public class HomeActivity extends AppCompatActivity
 
         if (!Settings.System.canWrite(this)) {
 //            mPermissionChecker.requestPermissions();
-            Intent intent = new Intent(Settings.ACTION_MANAGE_WRITE_SETTINGS);
+            /*Intent intent = new Intent(Settings.ACTION_MANAGE_WRITE_SETTINGS);
             intent.setData(Uri.parse("package:" + getPackageName()));
-            startActivityForResult(intent, 123);
+            startActivityForResult(intent, 123);*/
         } else {
             ScreenBrightnessTool builder = ScreenBrightnessTool.Builder(this);
             boolean systemAutomaticMode = builder.getSystemAutomaticMode();
@@ -146,7 +146,6 @@ public class HomeActivity extends AppCompatActivity
                     Manifest.permission.READ_PHONE_STATE,
                     Manifest.permission.READ_EXTERNAL_STORAGE,
                     Manifest.permission.SET_DEBUG_APP,
-                    Manifest.permission.SYSTEM_ALERT_WINDOW,
                     Manifest.permission.GET_ACCOUNTS,
                     Manifest.permission.WRITE_APN_SETTINGS};
             ActivityCompat.requestPermissions(this, mPermissionList,

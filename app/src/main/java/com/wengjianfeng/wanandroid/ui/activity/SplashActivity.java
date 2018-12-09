@@ -2,13 +2,9 @@ package com.wengjianfeng.wanandroid.ui.activity;
 
 import android.content.Intent;
 import android.graphics.drawable.Drawable;
-import android.os.SystemClock;
-import android.support.annotation.Nullable;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.text.format.DateUtils;
+import android.support.annotation.Nullable;
 import android.util.Log;
-import android.view.Window;
 import android.view.WindowManager;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
@@ -23,17 +19,12 @@ import com.bumptech.glide.request.RequestOptions;
 import com.bumptech.glide.request.target.Target;
 import com.bumptech.glide.signature.ObjectKey;
 import com.wengjianfeng.wanandroid.R;
-import com.wengjianfeng.wanandroid.app.GlideApp;
-import com.wengjianfeng.wanandroid.app.WanApp;
 import com.wengjianfeng.wanandroid.app.WanConstants;
 import com.wengjianfeng.wanandroid.base.BaseActivity;
 
-import java.text.Format;
 import java.text.SimpleDateFormat;
 
-import butterknife.BindAnim;
 import butterknife.BindView;
-import butterknife.ButterKnife;
 
 public class SplashActivity extends BaseActivity {
 
