@@ -16,7 +16,7 @@ android {
             def outputFile = output.outputFile
             if (outputFile != null && outputFile.name.endsWith('.apk')) {
                 def fileName = outputFile.name.replace("app-release",
-                        "玩Android_v" + defaultConfig.versionName +
+                        "去看儿_v" + defaultConfig.versionName +
                                 "_" + buildType.name)
                 outputFileName = fileName
                 //往数组添加输出的文件路径

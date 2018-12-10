@@ -4,6 +4,7 @@ import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -76,13 +77,23 @@ public class RegisterActivity extends BaseActivity {
 
                 ApiUtil.requestRegister(new Callback<BaseResponse<UserBean>>() {
                     @Override
-                    public void onResponse(Call<BaseResponse<UserBean>> call, Response<BaseResponse<UserBean>> response) {
-
+                    public void onResponse(Call<BaseResponse<UserBean>> call,
+                                           Response<BaseResponse<UserBean>> response) {
+                        int errorCode = response.body().getErrorCode();
+                        if (errorCode == 0){
+                            onBackPressed();
+                            ToastUtils.showShort("注册成功，请登录");
+                        } else {
+                            ToastUtils.showShort(response.body().getErrorMsg());
+                        }
                     }
 
                     @Override
                     public void onFailure(Call<BaseResponse<UserBean>> call, Throwable t) {
-
+                        Log.e(TAG, "onFailure: "+t.getMessage());
+                        if (!TextUtils.isEmpty(t.getMessage())) {
+                            ToastUtils.showShort(t.getMessage());
+                        }
                     }
                 },userName,password,rePassword);
                 break;
