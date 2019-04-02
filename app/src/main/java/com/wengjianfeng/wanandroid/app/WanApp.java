@@ -1,10 +1,10 @@
 package com.wengjianfeng.wanandroid.app;
 
+import android.app.Application;
 import android.content.Context;
 import android.support.multidex.MultiDex;
 
 import com.blankj.utilcode.util.Utils;
-import com.lsh.packagelibrary.CasePackageApp;
 import com.orhanobut.logger.AndroidLogAdapter;
 import com.orhanobut.logger.Logger;
 import com.squareup.leakcanary.LeakCanary;
@@ -13,7 +13,7 @@ import com.squareup.leakcanary.LeakCanary;
  * Created by wengjianfeng on 2018/3/28.
  */
 
-public class WanApp extends CasePackageApp {
+public class WanApp extends Application {
 
     @Override
     public void onCreate() {

@@ -85,7 +85,6 @@ dependencies {
     implementation 'com.werb.permissionschecker:permissionschecker:0.0.1-beta2'
 
     implementation 'com.android.support:multidex:1.0.3'
-    implementation 'com.github.adonggit:CasePackage:1.74'
 }
 repositories {
     mavenCentral()
