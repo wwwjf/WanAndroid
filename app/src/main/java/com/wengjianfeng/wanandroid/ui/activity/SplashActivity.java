@@ -20,6 +20,7 @@ import com.bumptech.glide.request.target.Target;
 import com.bumptech.glide.signature.ObjectKey;
 import com.wengjianfeng.wanandroid.R;
 import com.wengjianfeng.wanandroid.app.WanConstants;
+import com.wengjianfeng.wanandroid.app.WanURL;
 import com.wengjianfeng.wanandroid.base.BaseActivity;
 
 import java.text.SimpleDateFormat;
@@ -45,7 +46,7 @@ public class SplashActivity extends BaseActivity {
         String date2String = TimeUtils.date2String(TimeUtils.getNowDate(),new SimpleDateFormat("yyyy-MM-dd"));
         Log.e(TAG, "onCreate: date2String="+date2String );
         Glide.with(this)
-                .load(WanConstants.SPLASH_HTTP_URL)
+                .load(WanURL.SPLASH_HTTP_URL)
                 .listener(new RequestListener<Drawable>() {
                     @Override
                     public boolean onLoadFailed(@Nullable GlideException e, Object model, Target<Drawable> target, boolean isFirstResource) {

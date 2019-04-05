@@ -82,7 +82,6 @@ public class LoginActivity extends BaseActivity {
                 ApiUtil.requestLogin(new Callback<BaseResponse<UserBean>>() {
                     @Override
                     public void onResponse(Call<BaseResponse<UserBean>> call, Response<BaseResponse<UserBean>> response) {
-                        com.orhanobut.logger.Logger.json(response.body().toString());
                         userBean = response.body().getData();
                         if (userBean == null){
                             Log.e(TAG, "onResponse: userBean为空");

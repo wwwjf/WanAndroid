@@ -1,6 +1,6 @@
 package com.wengjianfeng.wanandroid.helper;
 
-import com.wengjianfeng.wanandroid.app.WanConstants;
+import com.wengjianfeng.wanandroid.app.WanURL;
 import com.wengjianfeng.wanandroid.helper.interceptor.LoadCookieInterceptor;
 
 import okhttp3.OkHttpClient;
@@ -20,7 +20,7 @@ public class RetrofitClient {
                 .addInterceptor(new LoadCookieInterceptor())
                 .build();
         retrofit = new Retrofit.Builder()
-                .baseUrl(WanConstants.REQUEST_HTTP_URL)
+                .baseUrl(WanURL.REQUEST_HTTP_URL)
                 .addConverterFactory(GsonConverterFactory.create())
                 .client(okHttpClient)
                 .build();

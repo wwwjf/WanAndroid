@@ -1,8 +1,6 @@
 package com.wengjianfeng.wanandroid.ui.activity;
 
-import android.Manifest;
 import android.content.Intent;
-import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.provider.Settings;
@@ -10,7 +8,6 @@ import android.support.annotation.NonNull;
 import android.support.annotation.RequiresApi;
 import android.support.design.widget.NavigationView;
 import android.support.design.widget.TabLayout;
-import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.view.ViewPager;
@@ -137,20 +134,6 @@ public class HomeActivity extends AppCompatActivity
 
         mNavigationView.setNavigationItemSelectedListener(this);
         initHeaderView();
-
-        if (Build.VERSION.SDK_INT >= 23) {
-            String[] mPermissionList = new String[]{
-                    Manifest.permission.WRITE_EXTERNAL_STORAGE,
-                    Manifest.permission.ACCESS_FINE_LOCATION,
-                    Manifest.permission.READ_LOGS,
-                    Manifest.permission.READ_PHONE_STATE,
-                    Manifest.permission.READ_EXTERNAL_STORAGE,
-                    Manifest.permission.SET_DEBUG_APP,
-                    Manifest.permission.GET_ACCOUNTS,
-                    Manifest.permission.WRITE_APN_SETTINGS};
-            ActivityCompat.requestPermissions(this, mPermissionList,
-                    WanConstants.PERMISSION_REQUESTCODE);
-        }
 
     }
 
@@ -328,8 +311,8 @@ public class HomeActivity extends AppCompatActivity
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        if (requestCode == 123){
-            if (Settings.System.canWrite(this)){
+        if (requestCode == 123) {
+            if (Settings.System.canWrite(this)) {
                 ScreenBrightnessTool builder = ScreenBrightnessTool.Builder(this);
                 boolean systemAutomaticMode = builder.getSystemAutomaticMode();
                 if (systemAutomaticMode) {
