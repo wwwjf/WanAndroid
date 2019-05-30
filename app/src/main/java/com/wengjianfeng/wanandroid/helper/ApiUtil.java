@@ -6,6 +6,7 @@ import com.wengjianfeng.wanandroid.model.pojo.HotWordBean;
 import com.wengjianfeng.wanandroid.model.pojo.UserBean;
 import com.wengjianfeng.wanandroid.model.pojovo.ArticleListBean;
 import com.wengjianfeng.wanandroid.model.pojovo.ChapterBean;
+import com.wengjianfeng.wanandroid.model.splash.PictureBean;
 
 import java.util.List;
 
@@ -155,6 +156,16 @@ public class ApiUtil {
     public static void unCollectArticleData(Callback<BaseResponse<ArticleListBean>> callback,
                                             int id){
         Call<BaseResponse<ArticleListBean>> call = wanApiService.unCollectWanArticle(id);
+        call.enqueue(callback);
+    }
+
+    public static void getSplash(Callback<PictureBean> callback) {
+        Call<PictureBean> call = wanApiService.getSplash();
+        call.enqueue(callback);
+    }
+
+    public static void getProjectList(Callback<BaseResponse<List<ChapterBean>>> callback){
+        Call<BaseResponse<List<ChapterBean>>> call = wanApiService.getProjectList();
         call.enqueue(callback);
     }
 }

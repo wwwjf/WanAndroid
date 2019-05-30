@@ -22,6 +22,7 @@ import com.just.agentweb.IWebLayout;
 import com.just.agentweb.MiddlewareWebChromeBase;
 import com.just.agentweb.MiddlewareWebClientBase;
 import com.just.agentweb.PermissionInterceptor;
+import com.wengjianfeng.wanandroid.R;
 
 /**
  * Created by cenxiaozhong on 2017/7/22.
@@ -84,7 +85,7 @@ public abstract class BaseAgentWebFragment extends Fragment {
     }
 
     protected static class ErrorLayoutEntity {
-        private int layoutRes = com.just.agentweb.R.layout.agentweb_error_page;
+        private int layoutRes = R.layout.agentweb_error_page;
         private int reloadId;
 
         public void setLayoutRes(int layoutRes) {

@@ -35,7 +35,7 @@ import com.wengjianfeng.wanandroid.ui.event.ScrollTreeEvent;
 import com.wengjianfeng.wanandroid.ui.event.UserEvent;
 import com.wengjianfeng.wanandroid.ui.fragment.ChapterFragment;
 import com.wengjianfeng.wanandroid.ui.fragment.HomeFragment;
-import com.wengjianfeng.wanandroid.ui.fragment.UserFragment;
+import com.wengjianfeng.wanandroid.ui.fragment.ProjectFragment;
 import com.wengjianfeng.wanandroid.utils.ScreenBrightnessTool;
 
 import org.greenrobot.eventbus.EventBus;
@@ -178,12 +178,14 @@ public class HomeActivity extends AppCompatActivity
         List<Fragment> fragmentList = new ArrayList<>();
         HomeFragment homeFragment = HomeFragment.newInstance("首页", "articleFragment");
         ChapterFragment chapterFragment = ChapterFragment.newInstance("知识体系", "chapterFragment");
-        UserFragment userFragment = UserFragment.newInstance("个人", "userFragment");
+        ProjectFragment projectFragment = ProjectFragment.newInstance("项目", "projectFragment");
         fragmentList.add(homeFragment);
         fragmentList.add(chapterFragment);
+        fragmentList.add(projectFragment);
 
         mPagerAdapter = new MainFragmentPagerAdapter(getSupportFragmentManager(), fragmentList);
         mViewPager.setAdapter(mPagerAdapter);
+        mViewPager.setOffscreenPageLimit(3);
         mTabLayout.addOnTabSelectedListener(new TabLayout.ViewPagerOnTabSelectedListener(mViewPager));
         mViewPager.addOnPageChangeListener(new TabLayout.TabLayoutOnPageChangeListener(mTabLayout));
         mViewPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {

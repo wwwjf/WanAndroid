@@ -2,10 +2,12 @@ package com.wengjianfeng.wanandroid.helper;
 
 import com.wengjianfeng.wanandroid.model.BaseResponse;
 import com.wengjianfeng.wanandroid.model.pojo.BannerBean;
+import com.wengjianfeng.wanandroid.model.pojo.ChapterChildrenBean;
 import com.wengjianfeng.wanandroid.model.pojo.HotWordBean;
 import com.wengjianfeng.wanandroid.model.pojo.UserBean;
 import com.wengjianfeng.wanandroid.model.pojovo.ArticleListBean;
 import com.wengjianfeng.wanandroid.model.pojovo.ChapterBean;
+import com.wengjianfeng.wanandroid.model.splash.PictureBean;
 
 import java.util.List;
 
@@ -16,6 +18,7 @@ import retrofit2.http.GET;
 import retrofit2.http.POST;
 import retrofit2.http.Path;
 import retrofit2.http.Query;
+import retrofit2.http.Url;
 
 /**
  * Created by wengjianfeng on 2018/4/1.
@@ -142,4 +145,17 @@ public interface WanApiService {
     Call<BaseResponse<ArticleListBean>> unCollectWanArticle(@Path("id") int id);
 
 
+    /***
+     * 启动图
+     * @return
+     */
+    @POST("https://bing.ioliu.cn/v1/?type=json")
+    Call<PictureBean> getSplash();
+
+    /**
+     * 项目分类
+     * @return
+     */
+    @GET("project/tree/json")
+    Call<BaseResponse<List<ChapterBean>>> getProjectList();
 }

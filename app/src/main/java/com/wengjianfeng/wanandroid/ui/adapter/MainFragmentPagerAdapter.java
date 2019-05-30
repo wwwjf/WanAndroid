@@ -5,10 +5,6 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 
-import com.wengjianfeng.wanandroid.ui.fragment.HomeFragment;
-import com.wengjianfeng.wanandroid.ui.fragment.ChapterFragment;
-import com.wengjianfeng.wanandroid.ui.fragment.UserFragment;
-
 import java.util.List;
 
 /**

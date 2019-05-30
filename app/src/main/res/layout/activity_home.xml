@@ -61,6 +61,11 @@
                 android:layout_height="wrap_content"
                 android:icon="@drawable/selector_chapter"
                 android:text="知识体系" />
+            <android.support.design.widget.TabItem
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:icon="@drawable/selector_project"
+                android:text="项目" />
         </android.support.design.widget.TabLayout>
     </android.support.design.widget.CoordinatorLayout>
 
