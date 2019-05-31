@@ -1,5 +1,9 @@
 apply plugin: 'com.android.application'
 
+
+def cmd = 'git rev-list HEAD --count'
+def gitVersion = cmd.execute().text.trim().toInteger()
+
 android {
     signingConfigs {
         debug {
@@ -11,7 +15,7 @@ android {
     }
     def fileArray = []
     //遍历输出文件
-    android.applicationVariants.all { variant ->
+    /*android.applicationVariants.all { variant ->
         variant.outputs.all { output ->
             def outputFile = output.outputFile
             if (outputFile != null && outputFile.name.endsWith('.apk')) {
@@ -23,7 +27,9 @@ android {
                 fileArray.add(outputFile.parentFile.absolutePath + File.separator + fileName)
             }
         }
-    }
+    }*/
+
+
     compileSdkVersion 26
     defaultConfig {
         applicationId "com.wengjianfeng.wanandroid"
@@ -31,16 +37,45 @@ android {
         targetSdkVersion 26
         versionCode 1
         versionName "1.0.0"
+        flavorDimensions "channel"
         multiDexEnabled true
     }
     buildTypes {
         release {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+            signingConfig signingConfigs.debug
         }
         debug {
             signingConfig signingConfigs.debug
         }
+    }
+
+    applicationVariants.all { variant ->
+        variant.outputs.all {
+            def fileName = "去看儿_v${defaultConfig.versionName}_${variant.buildType.name}_${variant.productFlavors[0].name}.apk"
+//            outputFileName = fileName
+//            outputFileName = project.rootDir.path+fileName
+            outputFileName = "../../release/"+fileName
+            println("apk 路径：${outputFileName}")
+        }
+
+    }
+    productFlavors {
+
+        offical {
+            manifestPlaceholders = [APP_NAME:"去看儿",
+                                    APP_CHANNEL: "offical"]
+        }
+        /*huawei {
+            manifestPlaceholders = [APP_NAME: "去看儿_华为",
+                                    APP_CHANNEL: "huawei"]
+        }
+
+        xiaomi {
+            manifestPlaceholders = [APP_NAME: "去看儿_小米",
+                                    APP_CHANNEL: "xiaomi"]
+        }*/
     }
 }
 
