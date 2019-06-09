@@ -13,7 +13,6 @@ import android.support.v4.view.GravityCompat;
 import android.support.v4.view.ViewPager;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
-import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.Menu;
@@ -27,6 +26,7 @@ import android.widget.TextView;
 import com.blankj.utilcode.util.ToastUtils;
 import com.wengjianfeng.wanandroid.R;
 import com.wengjianfeng.wanandroid.app.WanConstants;
+import com.wengjianfeng.wanandroid.base.BaseActivity;
 import com.wengjianfeng.wanandroid.manager.UserInfoManager;
 import com.wengjianfeng.wanandroid.model.pojo.UserBean;
 import com.wengjianfeng.wanandroid.ui.adapter.MainFragmentPagerAdapter;
@@ -46,9 +46,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.BindView;
-import butterknife.ButterKnife;
 
-public class HomeActivity extends AppCompatActivity
+public class HomeActivity extends BaseActivity
         implements NavigationView.OnNavigationItemSelectedListener {
     public static final String TAG = HomeActivity.class.getSimpleName();
 
@@ -70,6 +69,11 @@ public class HomeActivity extends AppCompatActivity
     private MainFragmentPagerAdapter mPagerAdapter;
 
     @Override
+    protected boolean isNeedSwipeBack() {
+        return false;
+    }
+
+    @Override
     protected void onStart() {
         super.onStart();
         if (!EventBus.getDefault().isRegistered(this)) {
@@ -84,7 +88,6 @@ public class HomeActivity extends AppCompatActivity
         setContentView(R.layout.activity_home);
 //        initImmersive();
 
-        ButterKnife.bind(this);
 
         if (!Settings.System.canWrite(this)) {
 //            mPermissionChecker.requestPermissions();

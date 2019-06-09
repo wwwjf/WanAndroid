@@ -11,9 +11,6 @@ public class StringUtil {
 
     /**
      * 判断是否为null或空字符串
-     * @author leibing
-     * @createTime 2016/08/30
-     * @lastModify 2016/08/30
      * @param str
      * @return
      */
@@ -26,9 +23,6 @@ public class StringUtil {
 
     /**
      * 判断是否不为null或不是空字符串
-     * @author leibing
-     * @createTime 2016/08/30
-     * @lastModify 2016/08/30
      * @param str
      * @return
      */
@@ -40,9 +34,6 @@ public class StringUtil {
 
     /**
      * 根据类名获取对象实例
-     * @author leibing
-     * @createTime 2016/08/30
-     * @lastModify 2016/08/30
      * @param className 类名
      * @return
      */
@@ -63,9 +54,6 @@ public class StringUtil {
 
     /**
      * 字符串是否数字
-     * @author leibing
-     * @createTime 2016/11/17
-     * @lastModify 2016/11/17
      * @param
      * @return
      */

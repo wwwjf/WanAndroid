@@ -51,12 +51,17 @@ android {
         }
     }
 
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
+    }
+
     applicationVariants.all { variant ->
         variant.outputs.all {
             def fileName = "去看儿_v${defaultConfig.versionName}_${variant.buildType.name}_${variant.productFlavors[0].name}.apk"
 //            outputFileName = fileName
 //            outputFileName = project.rootDir.path+fileName
-            outputFileName = "../../release/"+fileName
+            outputFileName = "../../release/" + fileName
             println("apk 路径：${outputFileName}")
         }
 
@@ -64,7 +69,7 @@ android {
     productFlavors {
 
         offical {
-            manifestPlaceholders = [APP_NAME:"去看儿",
+            manifestPlaceholders = [APP_NAME   : "去看儿",
                                     APP_CHANNEL: "offical"]
         }
         /*huawei {
