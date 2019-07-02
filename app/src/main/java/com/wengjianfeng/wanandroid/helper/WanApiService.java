@@ -10,9 +10,11 @@ import com.wengjianfeng.wanandroid.model.pojovo.ChapterBean;
 import com.wengjianfeng.wanandroid.model.splash.PictureBean;
 
 import java.util.List;
+import java.util.Map;
 
 import retrofit2.Call;
 import retrofit2.http.Field;
+import retrofit2.http.FieldMap;
 import retrofit2.http.FormUrlEncoded;
 import retrofit2.http.GET;
 import retrofit2.http.POST;
@@ -81,10 +83,18 @@ public interface WanApiService {
      * @param password
      * @return
      */
-    @POST("user/login")
+    /*@POST("user/login")
     @FormUrlEncoded
     Call<BaseResponse<UserBean>> requestLogin(@Field("username") String userName,
-                                              @Field("password") String password);
+                                              @Field("password") String password);*/
+/**
+     * 登录
+     * @param params
+     * @return
+     */
+    @POST("user/login")
+    @FormUrlEncoded
+    Call<BaseResponse<UserBean>> requestLogin(@FieldMap Map<String,Object> params);
 
     /**
      * 注册

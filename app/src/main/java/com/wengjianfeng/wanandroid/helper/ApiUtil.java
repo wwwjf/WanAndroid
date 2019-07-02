@@ -8,7 +8,9 @@ import com.wengjianfeng.wanandroid.model.pojovo.ArticleListBean;
 import com.wengjianfeng.wanandroid.model.pojovo.ChapterBean;
 import com.wengjianfeng.wanandroid.model.splash.PictureBean;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -97,7 +99,12 @@ public class ApiUtil {
      * @param password
      */
     public static void requestLogin(Callback<BaseResponse<UserBean>> callback,String userName,String password){
-        Call<BaseResponse<UserBean>> call = wanApiService.requestLogin(userName,password);
+
+        Map<String,Object> params = new HashMap<>();
+        params.put("username",userName);
+        params.put("password",password);
+        Call<BaseResponse<UserBean>> call = wanApiService.requestLogin(params);
+//        Call<BaseResponse<UserBean>> call = wanApiService.requestLogin(userName,password);
         call.enqueue(callback);
 
     }

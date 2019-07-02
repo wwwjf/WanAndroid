@@ -26,6 +26,7 @@ public class LoadCookieInterceptor implements Interceptor {
         Set<String> cookieSet = SPUtils.getInstance(WanConstants.SP_USERINFO)
                 .getStringSet(WanConstants.COOKIE);
         String path = builder.build().url().encodedPath();
+        Log.e(TAG, "intercept: ====================1");
         Log.e(TAG, "intercept: LoadCookieInterceptor path=" + path);
         if (!cookieSet.isEmpty()) {
             Iterator<String> iterator = cookieSet.iterator();
@@ -35,6 +36,7 @@ public class LoadCookieInterceptor implements Interceptor {
                 builder.addHeader("Cookie", cookie);
             }
         }
+        Log.e(TAG, "intercept: ====================2");
         return chain.proceed(builder.build());
     }
 }
